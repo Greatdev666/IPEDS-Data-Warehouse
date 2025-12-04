@@ -1,0 +1,1409 @@
+version: 2 
+
+models:
+
+  - name: dim_institution
+    description: "Institution dimension with all metadata for Gold layer"
+    columns:
+      - name: unit_id
+        description: "Original UNITID from IPEDS"
+        tests:
+          - unique
+          - not_null
+      - name: institution_name
+        description: "Official institution name"
+      - name: institution_alias
+        description: "Alternate institution name"
+      - name: city
+        description: "City where the institution is located"
+      - name: state_abbreviation
+        description: "State abbreviation"
+      - name: zip_code
+        description: "ZIP code"
+      - name: region_code
+        description: "Census/BEA region code"
+      - name: longitude
+        description: "Longitude coordinate"
+      - name: latitude
+        description: "Latitude coordinate"
+      - name: sector
+        description: "Public/private/for-profit"
+      - name: institution_level
+        description: "2-year, 4-year, etc."
+      - name: control_type
+        description: "Control type (public/private)"
+      - name: highest_level_offering
+        description: "Highest degree offered"
+      - name: offers_undergraduate
+        description: "Yes/No for undergraduate programs"
+      - name: offers_graduate
+        description: "Yes/No for graduate programs"
+      - name: highest_degree_offered
+        description: "Highest degree awarded"
+      - name: institution_size
+        description: "Size category"
+      - name: website_url
+        description: "Main website"
+      - name: admissions_url
+        description: "Admissions website"
+      - name: financial_aid_url
+        description: "Financial aid website"
+  - name: dim_academic_year
+    description: "Academic year dimension"
+    columns:
+      - name: academic_year_id
+        description: "Primary key for academic year"
+        tests: 
+          - unique
+          - not_null
+  - name: dim_race_ethnicity
+    description: "Standardized race/ethnicity dimension for all IPEDS fact tables."
+    columns: 
+      - name: race_ethnicity_sk
+        tests: 
+        - not_null
+        - unique
+
+      - name: category_name
+        description: "Standardized race or ethnicity category"
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: 
+                    - White
+                    - Black or African American
+                    - Hispanic or Latino
+                    - Asian
+                    - American Indian or Alaska Native
+                    - Native Hawaiian or Pacific Islander
+                    - Two or More Races
+                    - US Nonresident Alien
+                    - Race/ethnicity unknown
+  - name: dim_award_level
+    description: "Standardized mapping of IPEDS AWLEVEL codes to credential types."
+    columns:
+      - name: award_level_code
+        tests: 
+          - not_null
+          - unique
+          - accepted_values:
+              arguments:
+               values: [1, 2, 3, 4, 5, 6, 7, 8, 17, 18, 19, 20, 21]
+      - name: award_level_name
+        tests:
+          - not_null
+
+  - name: dim_gender
+    description: "Gender dimension used to standardize gender categories across all IPEDS fact tables, such as enrollment, completions, and admissions. This dimension enables consistent mapping of male/female fields from wide-format IPEDS data into a unified long-format structure."
+    columns:
+      - name: gender_sk
+        tests:
+          - unique
+          - not_null
+      - name: gender
+        tests:
+          - accepted_values:
+              arguments:
+                values:
+                  - 'Male'
+                  - 'Female'
+                  - 'Another Gender'
+                  - 'Gender Unknown'
+  - name: dim_age_category
+    description: "Standardized age categories used across enrollment and completions fact tables."
+    columns:
+      - name: age_category_sk
+        tests:
+          - unique
+          - not_null
+
+      - name: ef_age_code
+        description: "IPEDS code from EFBAGE field"
+        tests:
+          - accepted_values:
+             arguments:
+              values:
+                - 1
+                - 2
+                - 3
+                - 4
+                - 5
+                - 6
+                - 7
+                - 8
+                - 9
+                - 10
+                - 99
+
+      - name: age_label
+        description: "Readable age grouping for BI reporting"
+        tests:
+          - not_null
+  - name: dim_distance_ed_type
+    description: "Standardized distance education modes used for enrollment and completions reporting."
+    columns:
+
+      - name: learning_mode_key
+        description: "Surrogate key identifying the distance education category."
+        tests:
+          - unique
+          - not_null
+
+      - name: learning_mode
+        description: "Readable distance education mode (Fully Online, Hybrid, In-Person)."
+        tests:
+          - not_null
+          - accepted_values:
+              values:
+                - "Fully Online"
+                - "Hybrid"
+                - "In-Person"
+  - name: fact_admissions
+    description: 
+      Fact table containing yearly admissions metrics for institutions.
+      Each record represents one institution in one academic year.
+      Includes total applicants, total admissions, and total enrolled counts.
+      Joined with dim_institutions to enrich each row with institution attributes.
+
+    columns:
+      - name: academic_year_id
+        description: "IPEDS reporting year for the admissions record."
+        tests:
+          - not_null
+
+      - name: total_applicants
+        description: "Number of total applicants (APPLCN)."
+
+      - name: total_admissions
+        description: "Number of total admitted students (ADMSSN)."
+
+      - name: total_enrolled
+        description: "Number of students enrolled after admission (ENRLT)."
+  - name: fact_completion_by_award
+    description: >
+      Fact table containing the total number of completions reported by each institution
+      for each award level and academic year. The grain of this table is:
+      one row per (institution, year, award level). This model aggregates completions
+      from the IPEDS Completions (CYYYY_A) survey.
+
+    columns:
+      - name: unit_id
+        description: "Unique institution identifier from IPEDS."
+        tests:
+          - not_null
+
+      - name: year
+        description: "Academic year for which completions were reported."
+        tests:
+          - not_null
+
+      - name: award_level_code
+        description: "IPEDS numeric award level code (e.g., 1, 2, 3, 5, 7, 17, 19)."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_award_level')
+              field: award_level_code
+
+      - name: total_completions
+        description:
+          Total number of completions reported by the institution for this award level
+          and year (SUM of CTOTALT). Represents all demographics combined.
+        tests:
+          - not_null
+
+    # Composite key tests
+    tests:
+      - unique:
+          column_name: "unit_id || '-' || year || '-' || award_level_code"
+      - not_null:
+          column_name: "unit_id || '-' || year || '-' || award_level_code"
+  - name: fact_completions_total
+    description: >
+      Fact table containing institution-level annual total completions.
+      Includes total completions, male completions, and female completions
+      for each institution and academic year, joined with institutional metadata.
+
+    columns:
+      - name: year
+        description: Academic year of reported completions.
+        tests:
+          - not_null
+
+      - name: unit_id
+        description: Unique identifier for the institution.
+        tests:
+          - not_null
+
+      - name: total_completions
+        description: Total completions across the institution.
+
+      - name: total_male_completions
+        description: Total male completions.
+
+      - name: total_female_completions
+        description: Total female completions.
+  - name: fact_completions_by_race
+    description: >
+      Fact table containing annual completions by race/ethnicity for each institution.
+      One row represents completions for a single institution, year, and race group.
+      Data comes from IPEDS Completions survey (CYYYY_B).
+
+    columns:
+      - name: year
+        description: Academic year of the completions record.
+        tests:
+          - not_null
+
+      - name: unit_id
+        description: Institution identifier used in IPEDS.
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_institutions')
+              field: unit_id
+
+      - name: race_ethnicity_sk
+        description: Surrogate key linking to dim_race_ethnicity.
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_race_ethnicity')
+              field: race_ethnicity_sk
+
+      - name: total
+        description: Total completions for the race/ethnicity group.
+
+      - name: male
+        description: Male completions for the race/ethnicity group.
+
+      - name: female
+        description: Female completions for the race/ethnicity group.
+
+    tests:
+      # Composite primary key
+      - not_null:
+          column_name: "unit_id || '-' || year || '-' || race_ethnicity_sk"
+  - name: fact_enrollment_fullyear_total
+    description: >
+      Stores institution-level full-year enrollment totals.  
+      Contains overall, male, and female enrollment counts aggregated per
+      reporting year and institution (UNITID).
+
+    columns:
+      - name: year
+        description: "Reporting year"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_academic_year')
+              field: academic_year_id
+
+      - name: unit_id
+        description: "IPEDS institutional UNITID"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_institutions')
+              field: unit_id
+
+      - name: total_enrolled
+        description: "Total full-year enrolled students"
+        tests:
+          - not_null
+
+
+      - name: total_male_enrolled
+        description: "Male full-year enrolled students"
+        tests:
+          - not_null
+
+      - name: total_female_enrolled
+        description: "Female full-year enrolled students"
+        tests:
+          - not_null
+
+
+  - name: fact_enrollment_fullyear_race
+    description: >
+      Full-year enrollment counts broken down by race/ethnicity and gender.
+      This table is produced by unpivoting the race-specific enrollment
+      columns from the IPEDS EFY survey.
+
+    columns:
+      - name: year
+        description: "Reporting year"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_academic_year')
+              field: academic_year_id
+
+      - name: unit_id
+        description: "IPEDS institutional UNITID"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_institutions')
+              field: unit_id
+
+      - name: race_ethnicity_sk
+        description: "Foreign key to dim_race_ethnicity"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_race_ethnicity')
+              field: race_ethnicity_sk
+
+      - name: total
+        description: "Total enrollment for the race/ethnicity group"
+        tests:
+          - not_null
+
+      - name: male
+        description: "Male enrollment for the race/ethnicity group"
+        tests:
+          - not_null
+
+      - name: female
+        description: "Female enrollment for the race/ethnicity group"
+        tests:
+          - not_null
+  - name: fact_learning_mode
+    description: >
+      Full-year enrollment counts broken down by learning mode (Fully Online, Hybrid, In-Person)
+      for each institution, year, and student level.
+
+    columns:
+      - name: year
+        description: "Reporting year of the enrollment data"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_academic_year')
+              field: academic_year_id
+
+      - name: unit_id
+        description: "IPEDS institutional UNITID"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_institutions')
+              field: unit_id
+
+      - name: student_level
+        description: "Student level (e.g., undergraduate, graduate) as reported in IPEDS"
+        tests:
+          - not_null
+
+      - name: total_enrolled
+        description: "Total enrollment for the student level across all learning modes"
+        tests:
+          - not_null
+
+      - name: learning_mode_key
+        description: "Foreign key to dim_learning_mode"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_learning_mode')
+              field: learning_mode_key
+
+      - name: learning_mode
+        description: "Learning mode category (Fully Online, Hybrid, In-Person)"
+        tests:
+          - not_null
+  - name: fact_graduates_total
+    description: >
+      Annual graduation counts at the institution level, broken down by graduation type.
+      Includes total graduates, male graduates, and female graduates.
+
+    columns:
+      - name: year
+        description: "Reporting year of the graduation data"
+        tests:
+          - not_null
+
+      - name: unit_id
+        description: "IPEDS institutional UNITID"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_institutions')
+              field: unit_id
+
+      - name: graduation_type
+        description: "Graduation type/category as reported in IPEDS"
+        tests:
+          - not_null:
+              severity: warn
+
+      - name: total_graduates
+        description: "Total number of graduates across all genders"
+        tests:
+          - not_null
+
+      - name: total_male_graduates
+        description: "Total male graduates"
+        tests:
+          - not_null
+
+      - name: total_female_graduates
+        description: "Total female graduates"
+        tests:
+          - not_null
+
+      # Optional: composite uniqueness test
+    tests:
+      - unique:
+          column_name: "unit_id || '-' || year || '-' || graduation_type"
+
+  - name: fact_graduates_by_race
+    description: >
+      Annual graduation counts by race/ethnicity at the institution level.
+      Includes total, male, and female graduates for each race/ethnicity.
+
+    columns:
+      - name: year
+        description: "Reporting year of the graduation data"
+        tests:
+          - not_null
+
+      - name: unit_id
+        description: "IPEDS institutional UNITID"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_institutions')
+              field: unit_id
+
+      - name: graduation_type
+        description: "Graduation type/category as reported in IPEDS"
+        tests:
+          - not_null
+
+      - name: race_ethnicity_sk
+        description: "Foreign key to dim_race_ethnicity"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_race_ethnicity')
+              field: race_ethnicity_sk
+
+      - name: total
+        description: "Total graduates for the race/ethnicity"
+        tests:
+          - not_null
+
+      - name: male
+        description: "Male graduates for the race/ethnicity"
+        tests:
+          - not_null
+
+      - name: female
+        description: "Female graduates for the race/ethnicity"
+        tests:
+          - not_null
+  - name: dim_finance_category
+    description: "Dimension table that defines all finance categories (Balance Sheet, Revenue, Expense) used in the fact_finance table."
+    columns:
+      - name: finance_category_sk
+        description: "Surrogate key for finance category."
+        tests:
+          - unique
+          - not_null
+      - name: category_code
+        description: "Short code representing the finance metric (e.g., TOTAL_ASSETS)."
+        tests:
+          - unique
+          - not_null
+      - name: category_group
+        description: "High-level group of finance metric (Balance Sheet, Revenue, Expense)."
+      - name: category_subgroup
+        description: "Sub-group of the finance metric (Assets, Liabilities, Program Expense, etc.)."
+      - name: description
+        description: "Human-readable description of the finance metric."
+
+  - name: fact_finance
+    description: "Fact table with finance metrics for all institutions and years, including finance_type (F1/F2/F3)."
+    columns:
+      - name: year
+        description: "Fiscal year of the record."
+        tests:
+          - not_null
+      - name: unit_id
+        description: "Institution identifier."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_institutions')
+              field: unit_id
+      - name: finance_type
+        description: "Mini Code that represents the type of finance report; F1 is Public Institutional Finance, F2 is Not-For-Profit Institutional Finance, F3 is For-Profit Institutional Finance"
+      - name: finance_category_sk
+        description: "Foreign key to dim_finance_category."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_finance_category')
+              field: finance_category_sk
+      - name: finance_type
+        description: "Type of finance report: F1 (public), F2 (private nonprofit), F3 (for-profit)."
+        tests:
+          - not_null
+      - name: amount
+        description: "Amount for the finance metric in the given year, institution, and finance_type."
+        tests:
+          - not_null
+  - name: mart_enrollment
+    description: >
+      A dimensional enrollment mart that joins full-year enrollment fact data
+      with academic year and institutional attributes for analysis.
+    columns:
+      - name: academic_year_id
+        description: Academic year surrogate key.
+        tests:
+          - not_null
+
+      - name: unit_id
+        description: Unique institution identifier (UNITID).
+        tests:
+          - not_null
+
+      - name: institution_name
+        description: Name of the institution.
+
+      - name: city
+        description: Institution city.
+
+      - name: state_abbreviation
+        description: Two-letter state code.
+
+      - name: control_type
+        description: >
+          Control type of the institution (Public / Private Nonprofit / Private For-profit).
+
+      - name: sector
+        description: Sector classification.
+
+      - name: institution_level
+        description: Level of the institution (4-year, 2-year, etc).
+
+      - name: enrollment_level
+        description: >
+          Enrollment category (Undergraduate, Graduate, etc).
+        tests:
+          - accepted_values:
+              arguments:
+              values: [-2,1, 2, 3, 4]
+
+      - name: total_enrolled
+        description: Total number of enrolled students.
+        tests:
+          - not_null
+
+      - name: total_male_enrolled
+        description: Total male enrollment.
+
+      - name: total_female_enrolled
+        description: Total female enrollment.
+  - name: mart_enrollment_metrics
+    description: >
+      Aggregated enrollment metrics including totals, level splits,
+      gender splits, and year-over-year growth indicators.
+    columns:
+      - name: unit_id
+        description: Institution unit ID.
+        tests:
+          - not_null
+
+      - name: academic_year_id
+        description: Academic year key.
+        tests:
+          - not_null
+
+      - name: total_enrollment
+        description: Total enrollment aggregated at the institution-year level.
+
+      - name: total_undergraduates_enrollment
+        description: Total undergraduate enrollment.
+
+      - name: total_graduates_enrollment
+        description: Total graduate enrollment.
+
+      - name: total_male_enrollment
+        description: Total male enrollment.
+
+      - name: total_female_enrollment
+        description: Total female enrollment.
+
+      - name: enrollment_yoy_change
+        description: Year-over-year absolute enrollment change.
+
+      - name: enrollment_yoy_percent
+        description: Year-over-year percent enrollment change.
+
+      - name: male_enrollment_percent
+        description: Percentage of enrollment that is male.
+
+      - name: female_enrollment_percent
+        description: Percentage of enrollment that is female.
+
+      - name: male_enrolled_yoy_change
+        description: Year-over-year change in male enrollment.
+
+      - name: female_enrolled_yoy_change
+        description: Year-over-year change in female enrollment.
+
+      - name: male_enrolled_yoy_percent
+        description: Year-over-year percent male enrollment change.
+
+      - name: female_enrolled_yoy_percent
+        description: Year-over-year percent female enrollment change.
+  - name: mart_admissions
+    description: >
+      Admissions mart combining institution attributes, academic year 
+      information, and yearly applicant/admissions/enrollment counts.
+    columns:
+      - name: academic_year_id
+        description: Academic year identifier.
+        tests:
+          - not_null
+
+      - name: unit_id
+        description: Institution identifier.
+        tests:
+          - not_null
+
+      - name: total_applicants
+        description: Total number of applicants for the academic year.
+
+      - name: total_admissions
+        description: Total number of admitted students for the academic year.
+
+      - name: total_enrolled
+        description: Total number of enrolled students for the academic year.
+
+  - name: mart_admissions_metrics
+    description: >
+      Business metrics derived from admissions data including admission rate, 
+      yield rate, and year-over-year changes.
+    columns:
+      - name: admission_rate
+        description: Admitted / Applicants ratio.
+
+      - name: yield_rate
+        description: Enrolled / Admitted ratio.
+
+      - name: applicants_yoy_change
+        description: YoY change in applicants.
+
+      - name: applicants_yoy_percent
+        description: YoY percent change in applicants.
+  - name: mart_finance
+    description: "Finance data aggregated at the institution + year level, pivoted across finance categories."
+
+    config:
+      materialized: table
+
+    columns:
+      - name: academic_year_id
+        description: "The academic year identifier."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_academic_year')
+              field: academic_year_id
+
+      - name: unit_id
+        description: "Institution identifier."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_institutions')
+              field: unit_id
+
+      - name: institution_name
+        description: "Official institution name."
+
+      - name: total_enrolled
+        description: "Total enrolled students for the corresponding academic year."
+
+      - name: total_revenue
+        description: "Total revenue reported by the institution."
+        tests:
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: ">= 0"
+                severity: warn
+
+      - name: total_expenses
+        description: "Total expenses reported by the institution."
+        tests:
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: ">= 0"
+                severity: warn
+
+      - name: tuition_revenue
+        description: "Revenue generated from tuition and student fees."
+        tests:
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: ">= 0"
+                severity: warn
+
+      - name: endowment_value
+        description: "End-of-year endowment value."
+        tests:
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: ">= 0"
+                severity: warn
+
+      - name: net_position
+        description: "Net assets / financial position for the institution."
+
+      - name: federal_rev
+        description: "Federal revenue amount."
+        tests:
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: ">= 0"
+                severity: warn
+
+      - name: state_rev
+        description: "State revenue amount."
+        tests:
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: ">= 0"
+                severity: warn
+
+      - name: private_rev
+        description: "Private revenue amount."
+        tests:
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: ">= 0"
+                severity: warn
+
+  - name: mart_finance_metrics
+    description: "Derived KPIs and Year-over-Year changes for financial metrics."
+
+    config:
+      materialized: table
+
+    columns:
+      - name: academic_year_id
+        description: "Academic year identifier."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_academic_year')
+              field: academic_year_id
+
+      - name: unit_id
+        description: "Institution identifier."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_institutions')
+              field: unit_id
+
+      # ===== KPI Columns =====
+      - name: revenue_per_student
+        description: "Total revenue divided by total enrollment."
+        tests:
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: ">= 0"
+                severity: warn
+
+      - name: expense_per_student
+        description: "Total expenses divided by total enrollment."
+        tests:
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: ">= 0"
+
+      - name: endowment_per_student
+        description: "Endowment divided by total enrollment."
+        tests:
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: ">= 0"
+                severity: warn
+
+
+      - name: operating_margin
+        description: "Operating margin = (Revenue - Expenses) / Revenue"
+        
+
+      - name: tuition_dependence_percent
+        description: "Share of revenue that comes from tuition fees."
+
+      # ===== YoY tests (should NOT be null except for the first year) =====
+      - name: revenue_yoy_change
+        description: "Absolute revenue year-over-year change."
+
+      - name: revenue_yoy_percent
+        description: "Percentage revenue year-over-year change."
+
+      - name: expense_per_student_yoy_percent
+        description: "Percentage change in expense per student YoY."
+
+      - name: endowment_value_yoy_percent
+        description: "Endowment YoY percent change."
+
+      - name: operating_margin_yoy_percent
+        description: "Operating margin YoY percent change."
+  - name: mart_outcome
+    description: >
+      Aggregated outcome data for each institution and academic year,
+      including total graduates and gender splits, before computing metrics.
+    columns:
+      - name: academic_year_id
+        description: "Academic year surrogate key."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_academic_year')
+              field: academic_year_id
+
+      - name: unit_id
+        description: "Institution identifier."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_institutions')
+              field: unit_id
+
+      - name: institution_name
+        description: "Institution official name."
+
+      - name: city
+        description: "Institution city."
+
+      - name: state_abbreviation
+        description: "State abbreviation."
+
+      - name: control_type
+        description: "Institution control (public, private nonprofit, private for-profit)."
+
+      - name: sector
+        description: "IPEDS sector classification."
+
+      - name: institution_level
+        description: "Level of institution (4-year, 2-year, etc)."
+
+      - name: total_graduates
+        description: "Total number of graduates for the year."
+
+      - name: total_male_graduates
+        description: "Total male graduates."
+
+      - name: total_female_graduates
+        description: "Total female graduates."
+
+  - name: mart_outcome_metrics
+    description: >
+      Outcome performance metrics including gender splits, YoY changes,
+      cohort-based graduation rates (100% & 150% of normal time), and
+      transfer-out rates.
+    columns:
+
+      # KEYS
+      - name: academic_year_id
+        description: "Academic year surrogate key."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_academic_year')
+              field: academic_year_id
+
+      - name: unit_id
+        description: "Institution identifier."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_institutions')
+              field: unit_id
+
+      # BASE AGG NUMBERS
+      - name: total_graduates
+        description: "Total graduates in the academic year."
+
+      - name: total_male_graduates
+        description: "Male graduates."
+
+      - name: total_female_graduates
+        description: "Female graduates."
+
+      # GENDER PERCENTS
+      - name: male_graduation_percent
+        description: "Male grads divided by total grads."
+
+      - name: female_graduation_percent
+        description: "Female grads divided by total grads."
+
+      # YOY CHANGES
+      - name: graduation_yoy_change
+        description: "YoY absolute change in total graduates."
+
+      - name: graduation_yoy_percent
+        description: "YoY percent change in total graduates."
+
+      - name: male_graduates_yoy_change
+        description: "YoY absolute change in male graduates."
+
+      - name: female_graduates_yoy_change
+        description: "YoY absolute change in female graduates."
+
+      - name: male_graduates_yoy_percent
+        description: "YoY percent change in male graduates."
+
+      - name: female_graduates_yoy_percent
+        description: "YoY percent change in female graduates."
+
+      # COHORT FIELDS
+      - name: cohort_size
+        description: "IPEDS cohort size for graduation rate calculations."
+
+      - name: exclusions
+        description: "Exclusions from cohort (military, death, disability)."
+
+      - name: completions_100
+        description: "Students completing within 100% of normal time."
+
+      - name: completions_150
+        description: "Students completing within 150% of normal time."
+
+      - name: transfer_out
+        description: "Transfer-out students within 150% of normal time."
+
+      - name: adjusted_cohort
+        description: >
+          Cohort size minus exclusions. Used as denominator for all completion metrics.
+
+      # GRAD RATES
+      - name: graduation_rate_100
+        description: "100% graduation rate = completions_100 / adjusted_cohort."
+
+      - name: graduation_rate_150
+        description: "150% graduation rate = completions_150 / adjusted_cohort."
+
+      - name: transfer_out_rate
+        description: "Transfer-out rate = transfer_out / adjusted_cohort."
+  - name: mart_completions
+    description: "Aggregated completions per institution per academic year (totals and gender splits)."
+    columns:
+      - name: academic_year_id
+        description: "Surrogate id from dim_academic_year"
+        tests:
+          - not_null
+      - name: unit_id
+        description: "Institution UNITID"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_institutions')
+              field: unit_id
+      - name: total_completions
+        description: "Total completions (coalesced to 0 for missing)."
+      - name: total_male_completions
+        description: "Total male completions (coalesced to 0)."
+      - name: total_female_completions
+        description: "Total female completions (coalesced to 0)."
+    tests:
+      - unique:
+          column_name: "unit_id,academic_year_id"
+
+  - name: mart_completions_award_level
+    description: "Completions aggregated by award level per institution and academic year."
+    columns:
+      - name: academic_year_id
+        tests:
+          - not_null
+      - name: unit_id
+        tests:
+          - not_null
+      - name: associates_degree
+        description: "Sum of completions for award_level_code = 3"
+      - name: bachelors_degree
+        description: "Sum of completions for award_level_code = 5"
+      - name: masters_degree
+        description: "Sum of completions for award_level_code = 7"
+      - name: total_completions
+        description: "Sum of all completions for the institution-year (may differ from sum of level buckets if reporting conventions vary)."
+    
+
+  - name: mart_completions_metrics
+    description: "Derived metrics for completions: YoY changes, gender percentages and rates."
+    columns:
+      - name: academic_year_id
+        tests:
+          - not_null
+      - name: unit_id
+        tests:
+          - not_null
+      - name: total_completions
+        description: "Aggregated completions"
+      - name: graduation_yoy_change
+        description: "Absolute year-over-year change in total completions"
+      - name: graduation_yoy_percent
+        description: "Year-over-year percent change (decimal, e.g. 0.05 = +5%)"
+      - name: graduation_rate_150
+        description: "Completions within 150% / cohort (where cohort data exists)"
+    
+  - name: mart_race_enrollment_metrics
+    description: >
+      Race-based enrollment analytics including YoY changes, percent changes,
+      race shares, race gaps, URM share, and Diversity Index for each institution and academic year.
+
+    columns:
+      - name: academic_year_id
+        description: "Foreign key to academic year"
+        tests:
+          - not_null
+
+      - name: unit_id
+        description: "IPEDS institution UNITID"
+        tests:
+          - not_null
+
+      - name: institution_name
+        description: "Name of the institution"
+
+      - name: total_enrollment
+        description: "Total student enrollment for the academic year"
+
+      # -------------------------------
+      # Race Enrollment (Raw Counts)
+      # -------------------------------
+
+      - name: white_enrollment
+        description: "Enrollment count for White students"
+
+      - name: black_or_african_enrollment
+        description: "Enrollment count for Black or African American students"
+
+      - name: hispanic_or_latino_enrollment
+        description: "Enrollment count for Hispanic or Latino students"
+
+      - name: asian_enrollment
+        description: "Enrollment count for Asian students"
+
+      - name: american_indian_or_alaska_native_enrollment
+        description: "Enrollment count for American Indian or Alaska Native students"
+
+      - name: pacific_islander_or_native_hawaiian_enrollment
+        description: "Enrollment count for Pacific Islander or Native Hawaiian students"
+
+      - name: two_or_more_races_enrollment
+        description: "Enrollment count for students identifying with two or more races"
+
+      - name: nonresident_alien_enrollment
+        description: "Enrollment count for Nonresident Alien students"
+
+      - name: unknown_race_enrollment
+        description: "Enrollment count for Unknown race students"
+
+      # -------------------------------
+      # YoY Absolute Change
+      # -------------------------------
+
+      - name: total_enrollment_yoy_change
+        description: "Year-over-year change in total enrollment"
+
+      - name: white_enrollment_yoy_change
+        description: "YoY change for White enrollment"
+      - name: black_or_african_enrollment_yoy_change
+        description: "YoY change for Black enrollment"
+      - name: hispanic_or_latino_enrollment_yoy_change
+        description: "YoY change for Hispanic enrollment"
+      - name: asian_enrollment_yoy_change
+        description: "YoY change for Asian enrollment"
+      - name: american_indian_or_alaska_native_enrollment_yoy_change
+        description: "YoY change for Native American enrollment"
+      - name: pacific_islander_or_native_hawaiian_enrollment_yoy_change
+        description: "YoY change for Pacific Islander enrollment"
+      - name: two_or_more_races_enrollment_yoy_change
+        description: "YoY change for Two or More Races enrollment"
+      - name: nonresident_alien_enrollment_yoy_change
+        description: "YoY change for Nonresident Alien enrollment"
+      - name: unknown_race_enrollment_yoy_change
+        description: "YoY change for Unknown Race enrollment"
+
+      # -------------------------------
+      # YoY Percent Change
+      # -------------------------------
+
+      - name: enrollment_yoy_percent
+        description: "Percent change in total enrollment YoY"
+
+      - name: white_enrollment_yoy_percent
+        description: "Percent change for White enrollment"
+      - name: black_or_african_enrollment_yoy_percent
+        description: "Percent change for Black enrollment"
+      - name: hispanic_or_latino_enrollment_yoy_percent
+        description: "Percent change for Hispanic enrollment"
+      - name: asian_enrollment_yoy_percent
+        description: "Percent change for Asian enrollment"
+      - name: american_indian_or_alaska_native_enrollment_yoy_percent
+        description: "Percent change for Native American enrollment"
+      - name: pacific_islander_or_native_hawaiian_enrollment_yoy_percent
+        description: "Percent change for Pacific Islander enrollment"
+      - name: two_or_more_races_enrollment_yoy_percent
+        description: "Percent change for Two or More Races enrollment"
+      - name: nonresident_alien_enrollment_yoy_percent
+        description: "Percent change for Nonresident Alien enrollment"
+      - name: unknown_race_enrollment_yoy_percent
+        description: "Percent change for Unknown Race enrollment"
+
+      # -------------------------------
+      # Race Share of Institution
+      # -------------------------------
+
+      - name: white_share
+        description: "Percentage of total enrollment that is White"
+
+      - name: black_share
+        description: "Percentage of total enrollment that is Black"
+
+      - name: hispanic_share
+        description: "Percentage of total enrollment that is Hispanic"
+
+      - name: asian_share
+        description: "Percentage of total enrollment that is Asian"
+
+      - name: native_share
+        description: "Percentage of total enrollment that is Native American"
+
+      - name: pacific_share
+        description: "Percentage of total enrollment that is Pacific Islander"
+
+      - name: two_or_more_share
+        description: "Percentage of total enrollment that is Two or More Races"
+
+      - name: nonresident_share
+        description: "Percentage of total enrollment that is Nonresident Alien"
+
+      - name: unknown_share
+        description: "Percentage of total enrollment that is Unknown Race"
+
+      # -------------------------------
+      # Race Gap Metrics (vs White)
+      # -------------------------------
+
+      - name: black_white_gap
+        description: "Difference between Black share and White share (equity gap)"
+
+      - name: hispanic_white_gap
+        description: "Difference between Hispanic share and White share"
+
+      - name: asian_white_gap
+        description: "Difference between Asian share and White share"
+
+      - name: native_white_gap
+        description: "Difference between Native American share and White share"
+
+      - name: pacific_white_gap
+        description: "Difference between Pacific Islander share and White share"
+
+      - name: two_or_more_white_gap
+        description: "Difference between Two or More Races share and White share"
+
+      # -------------------------------
+      # URM Share
+      # -------------------------------
+
+      - name: urm_share
+        description: >
+          Share of Underrepresented Minorities (Black + Hispanic + Native +
+          Pacific Islander + Two or More).  
+          Excludes Asians because they are not classified by U.S. higher education
+          policy as underrepresented minorities (URM).
+
+      # -------------------------------
+      # Diversity Index
+      # -------------------------------
+
+      - name: diversity_index
+        description: >
+          Simpson Diversity Index = 1 - Σ(share²).  
+          Higher values indicate more racial diversity.
+  - name: mart_race_graduates_metrics
+    description: >
+      Metrics model providing year-over-year (YoY) changes, YoY percentages,
+      race share of institution graduates, and race equity gap indicators
+      for graduation counts by race across institutions and academic years.
+
+    columns:
+      - name: unit_id
+        description: Institution identifier.
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_institutions')
+              field: unit_id
+
+      - name: academic_year_id
+        description: Academic year key.
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_academic_year')
+              field: academic_year_id
+
+      - name: total_graduates
+        description: Total number of graduates.
+
+      - name: total_graduates_yoy_change
+        description: Year-over-year change in total graduates.
+
+      - name: graduates_yoy_percent
+        description: >
+          Year-over-year percent change in total graduates.
+          Calculated as (current / lag - 1).
+
+      # -------- Race Shares ----------
+      - name: white_share
+        description: Share of graduates who are White.
+
+      - name: black_share
+        description: Share of graduates who are Black or African American.
+
+      - name: hispanic_share
+        description: Share of graduates who are Hispanic or Latino.
+
+      - name: asian_share
+        description: Share of graduates who are Asian.
+
+      - name: native_share
+        description: Share of graduates who are American Indian or Alaska Native.
+
+      - name: pacific_share
+        description: Share of graduates who are Pacific Islander or Native Hawaiian.
+
+      - name: two_or_more_share
+        description: Share of graduates who identify as two or more races.
+
+      - name: nonresident_share
+        description: Share of graduates who are nonresident aliens.
+
+      - name: unknown_share
+        description: Share of graduates whose race is unknown.
+
+      # -------- Gap Metrics ----------
+      - name: black_white_gap
+        description: >
+          Difference between Black share and White share of graduates
+          (positive = Black overrepresentation relative to White).
+
+      - name: hispanic_white_gap
+        description: Hispanic vs White share gap.
+
+      - name: asian_white_gap
+        description: Asian vs White share gap.
+
+      - name: native_white_gap
+        description: American Indian/Alaska Native vs White share gap.
+
+      - name: pacific_white_gap
+        description: Pacific Islander/Native Hawaiian vs White share gap.
+
+      - name: two_or_more_white_gap
+        description: >
+          Two or more races compared to White share gap.
+
+
+  # -------------------------------------------------------------
+  #   MART: Race Completions Metrics
+  # -------------------------------------------------------------
+  - name: mart_race_completions_metrics
+    description: >
+      Metrics model calculating YoY changes, YoY percentages, race share
+      of completions, and race underrepresentation indicators using
+      enrollment shares as the baseline comparison.
+
+    columns:
+      - name: unit_id
+        description: Institution identifier.
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_institutions')
+              field: unit_id
+
+      - name: academic_year_id
+        description: Academic year identifier.
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_academic_year')
+              field: academic_year_id
+
+      - name: total_completions
+        description: Total completion count.
+
+      - name: completions_yoy_percent
+        description: >
+          Year-over-year percent change in completions
+          (current / lag - 1).
+
+      # -------- Race Shares ----------
+      - name: white_share
+        description: Percentage of completions from White students.
+
+      - name: black_share
+        description: Percentage of completions from Black or African American students.
+
+      - name: hispanic_share
+        description: Percentage of completions from Hispanic or Latino students.
+
+      - name: asian_share
+        description: Percentage of completions from Asian students.
+
+      - name: native_share
+        description: Percentage of completions from American Indian or Alaska Native students.
+
+      - name: pacific_share
+        description: Percentage of completions from Pacific Islander or Native Hawaiian students.
+
+      - name: two_or_more_share
+        description: Percentage of completions from students of two or more races.
+
+      - name: nonresident_share
+        description: Percentage of completions from nonresident alien students.
+
+      - name: unknown_share
+        description: Percentage of completions from students whose race is unknown.
+
+      # -------- Underrepresentation Metrics ----------
+      - name: black_underrepresentation
+        description: >
+          Completion share minus enrollment share — negative means underrepresented
+          relative to institution enrollment.
+
+      - name: hispanic_or_latino_underrepresentation
+        description: Hispanic/Latino underrepresentation metric.
+
+      - name: asian_underrepresentation
+        description: Asian underrepresentation metric.
+
+      - name: american_indian_or_alaska_native_underrepresentation
+        description: Native American underrepresentation metric.
+
+      - name: pacific_islander_or_native_hawaiian_underrepresentation
+        description: Pacific Islander underrepresentation.
+
+      - name: two_or_more_races_underrepresentation
+        description: Two or more races underrepresentation.
+
+      - name: nonresident_alien_underrepresentation
+        description: Nonresident underrepresentation.
+
+      - name: unknown_race_underrepresentation
+        description: Unknown race underrepresentation.

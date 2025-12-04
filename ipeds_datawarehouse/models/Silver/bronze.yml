@@ -1,0 +1,615 @@
+version: 2
+
+sources:
+  - name: bronze
+    schema: Bronze
+    tables:
+    # Admission : adm 
+      - name: adm2023
+        identifier: adm2023
+      - name: adm2022
+        identifier: adm2022_rv
+      - name: adm2021
+        identifier: adm2021_rv
+      - name: adm2020
+        identifier: adm2020_rv
+      - name: adm2019
+        identifier: adm2019_rv
+      - name: adm2018
+        identifier: adm2018_rv
+      - name: adm2017
+        identifier: adm2017_rv
+      - name: adm2016
+        identifier: adm2016_rv
+      - name: adm2015
+        identifier: adm2015_rv
+      - name: adm2014
+        identifier: adm2014_rv
+      - name: s2023_is
+        identifier: s2023_is 
+
+      # Completion : cyyyy_a
+      - name: c2023_a
+        identifier: c2023_a
+      - name: c2022_a
+        identifier: c2022_a_rv
+      - name: c2021_a
+        identifier: c2021_a_rv
+      - name: c2020_a
+        identifier: c2020_a_rv
+      - name: c2019_a
+        identifier: c2019_a_rv
+      - name: c2018_a
+        identifier: c2018_a_rv
+      - name: c2017_a 
+        identifier: c2017_a_rv
+      - name: c2016_a
+        identifier: c2016_a_rv
+      - name: c2015_a
+        identifier: c2015_a_rv
+      - name: c2014_a
+        identifier: c2014_a_rv
+      - name: c2013_a
+        identifier: c2013_a_rv
+      - name: c2012_a
+        identifier: c2012_a_rv
+      - name: c2011_a
+        identifier: c2011_a_rv
+      - name: c2010_a
+        identifier: c2010_a_rv
+      - name: c2009_a
+        identifier: c2009_a_rv
+      - name: c2008_a
+        identifier: c2008_a_rv
+      - name: c2007_a
+        identifier: c2007_a_rv
+      - name: c2006_a
+        identifier: c2006_a_rv
+      - name: c2005_a 
+        identifier: c2005_a_rv
+      - name: c2004_a
+        identifier: c2004_a_rv
+      - name: c2003_a
+        identifier: c2003_a 
+      - name: c2002_a
+        identifier: c2002_a
+      - name: c2001_a
+        identifier: c2001_a
+      - name: c2000_a
+        identifier: c2000_a
+
+      # Completions: cyyyy_b
+      - name: c2023_b
+        identifier: c2023_b
+      - name: c2022_b
+        identifier: c2022_b_rv
+      - name: c2021_b
+        identifier: c2021_b_rv
+      - name: c2020_b
+        identifier: c2020_b_rv
+      - name: c2019_b
+        identifier: c2019_b_rv
+      - name: c2018_b
+        identifier: c2018_b_rv
+      - name: c2017_b 
+        identifier: c2017_b_rv
+      - name: c2016_b
+        identifier: c2016_b_rv
+      - name: c2015_b
+        identifier: c2015_b_rv
+      - name: c2014_b
+        identifier: c2014_b_rv
+      - name: c2013_b
+        identifier: c2013_b_rv
+      - name: c2012_b
+        identifier: c2012_b_rv
+      
+      # Competions cyyyy_c
+      - name: c2023_c
+        identifier: c2023_c
+      - name: c2022_c
+        identifier: c2022_c_rv
+      - name: c2021_c
+        identifier: c2021_c_rv
+      - name: c2020_c
+        identifier: c2020_c_rv
+      - name: c2019_c
+        identifier: c2019_c_rv
+      - name: c2018_c
+        identifier: c2018_c_rv
+      - name: c2017_c 
+        identifier: c2017_c_rv
+      - name: c2016_c
+        identifier: c2016_c_rv
+      - name: c2015_c
+        identifier: c2015_c_rv
+      - name: c2014_c
+        identifier: c2014_c_rv
+      - name: c2013_c
+        identifier: c2013_c_rv
+      - name: c2012_c
+        identifier: c2012_c_rv
+
+      # Distance Learning full year: effyyyyy_dist
+      - name: effy2023_dist
+        identifier: effy2023_dist
+      - name: effy2022_dist
+        identifier: effy2022_dist_rv
+      - name: effy2021_dist
+        identifier: effy2021_dist_rv
+      - name: effy2020_dist
+        identifier: effy2020_dist_rv  
+
+      # Distance Learning fall only: efyyyy_dist
+      - name: ef2023_dist
+        identifier: ef2023a_dist
+      - name: ef2022_dist
+        identifier: ef2022a_dist_rv
+      - name: ef2021_dist
+        identifier: ef2021a_dist_rv
+      - name: ef2020_dist
+        identifier: ef2020a_dist_rv
+      - name: ef2019_dist
+        identifier: ef2019a_dist_rv
+      - name: ef2018_dist
+        identifier: ef2018a_dist_rv
+      - name: ef2017_dist 
+        identifier: ef2017a_dist_rv
+      - name: ef2016_dist
+        identifier: ef2016a_dist_rv
+      - name: ef2015_dist
+        identifier: ef2015a_dist_rv
+      - name: ef2014_dist
+        identifier: ef2014a_dist_rv
+      - name: ef2013_dist
+        identifier: ef2013a_dist_rv
+      - name: ef2012_dist
+        identifier: ef2012a_dist_rv
+      
+      # Enrollment Full Year: effyyyy
+      - name: effy2023
+        identifier: effy2023
+      - name: effy2022
+        identifier: effy2022_rv
+      - name: effy2021
+        identifier: effy2021_rv
+      - name: effy2020
+        identifier: effy2020_rv
+      - name: effy2019
+        identifier: effy2019_rv
+      - name: effy2018
+        identifier: effy2018_rv
+      - name: effy2017 
+        identifier: effy2017_rv
+      - name: effy2016
+        identifier: effy2016_rv
+      - name: effy2015
+        identifier: effy2015_rv
+      - name: effy2014
+        identifier: effy2014_rv
+      - name: effy2013
+        identifier: effy2013_rv
+      - name: effy2012
+        identifier: effy2012_rv
+      - name: effy2011
+        identifier: effy2011_rv
+      - name: effy2010
+        identifier: effy2010_rv
+      - name: effy2009
+        identifier: effy2009_rv
+      - name: effy2008
+        identifier: effy2008_rv
+      - name: effy2007 
+        identifier: effy2007_rv
+      - name: effy2006
+        identifier: effy2006_rv
+      - name: effy2005 
+        identifier: effy2005_rv
+      - name: effy2004
+        identifier: effy2004_rv
+      - name: effy2003
+        identifier: effy2003
+      - name: effy2002
+        identifier: effy2002
+      - name: effy2001
+        identifier: effy2001
+      - name: effy2000
+        identifier: effy2000
+      # Enrollment Fall Only: efyyyya
+      - name: ef2023a
+        identifier: ef2023a
+      - name: ef2022a
+        identifier: ef2022a_rv
+      - name: ef2021a
+        identifier: ef2021a_rv
+      - name: ef2020a
+        identifier: ef2020a_rv
+      - name: ef2019a
+        identifier: ef2019a_rv
+      - name: ef2018a
+        identifier: ef2018a_rv
+      - name: ef2017a
+        identifier: ef2017a_rv
+      - name: ef2016a
+        identifier: ef2016a_rv
+      - name: ef2015a
+        identifier: ef2015a_rv
+      - name: ef2014a
+        identifier: ef2014a_rv
+      - name: ef2013a
+        identifier: ef2013a_rv
+      - name: ef2012a
+        identifier: ef2012a_rv
+      - name: ef2011a
+        identifier: ef2011a_rv
+      - name: ef2010a
+        identifier: ef2011a_rv
+      - name: ef2009a
+        identifier: ef2009a_rv
+      - name: ef2008a
+        identifier: ef2008a_rv
+      - name: ef2007a 
+        identifier: ef2007a_rv
+      - name: ef2006a
+        identifier: ef2006a_rv
+      - name: ef2005a 
+        identifier: ef2005a_rv
+      - name: ef2004a
+        identifier: ef2004a_rv
+      - name: ef2003a
+        identifier: ef2003a
+      - name: ef2002a
+        identifier: ef2002a
+      - name: ef2001a
+        identifier: ef2001a
+      - name: ef2000a
+        identifier: ef2000a       
+
+      # Enrollment Fall Only: efyyyyb
+      - name: ef2023b
+        identifier: ef2023b
+      - name: ef2022b
+        identifier: ef2022b_rv
+      - name: ef2021b
+        identifier: ef2021b_rv
+      - name: ef2020b
+        identifier: ef2020b_rv
+      - name: ef2019b
+        identifier: ef2019b_rv
+      - name: ef2018b
+        identifier: ef2018b_rv
+      - name: ef2017b
+        identifier: ef2017b_rv
+      - name: ef2016b
+        identifier: ef2016b_rv
+      - name: ef2015b
+        identifier: ef2015b_rv
+      - name: ef2014b
+        identifier: ef2014b_rv
+      - name: ef2013b
+        identifier: ef2013b_rv
+      - name: ef2012b
+        identifier: ef2012b_rv
+      - name: ef2011b
+        identifier: ef2011b_rv
+      - name: ef2010b
+        identifier: ef2011b_rv
+      - name: ef2009b
+        identifier: ef2009b_rv
+      - name: ef2008b
+        identifier: ef2008b_rv
+      - name: ef2007b 
+        identifier: ef2007b_rv
+      - name: ef2006b
+        identifier: ef2006b_rv
+      - name: ef2005b
+        identifier: ef2005b_rv
+      - name: ef2004b
+        identifier: ef2004b_rv
+      - name: ef2003b
+        identifier: ef2003b
+      - name: ef2002b
+        identifier: ef2002b
+      - name: ef2001b
+        identifier: ef2001b
+      - name: ef2000b
+        identifier: ef2000b        
+
+      # Enrollment Fall Only: efyyyyc
+      - name: ef2023c
+        identifier: ef2023c
+      - name: ef2022c
+        identifier: ef2022c_rv
+      - name: ef2021c
+        identifier: ef2021c_rv
+      - name: ef2020c
+        identifier: ef2020c_rv
+      - name: ef2019c
+        identifier: ef2019c_rv
+      - name: ef2018c
+        identifier: ef2018c_rv
+      - name: ef2017c
+        identifier: ef2017c_rv
+      - name: ef2016c
+        identifier: ef2016c_rv
+      - name: ef2015c
+        identifier: ef2015c_rv
+      - name: ef2014c
+        identifier: ef2014c_rv
+      - name: ef2013c
+        identifier: ef2013c_rv
+      - name: ef2012c
+        identifier: ef2012c_rv
+      - name: ef2011c
+        identifier: ef2011c_rv
+      - name: ef2010c
+        identifier: ef2011c_rv
+      - name: ef2009c
+        identifier: ef2009c_rv
+      - name: ef2008c
+        identifier: ef2008c_rv
+      - name: ef2007c 
+        identifier: ef2007c_rv
+      - name: ef2006c
+        identifier: ef2006c_rv
+      - name: ef2005c
+        identifier: ef2005c_rv
+      - name: ef2004c
+        identifier: ef2004c_rv
+      - name: ef2003c
+        identifier: ef2003c
+      - name: ef2002c
+        identifier: ef2002c
+      - name: ef2001c
+        identifier: ef2001c
+      - name: ef2000c
+        identifier: ef2000c    
+
+      # Public Institution Finance: fyyyy_f1
+      - name: f2023_f1
+        identifier: f2223_f1a
+      - name: f2022_f1
+        identifier: f2122_f1a_rv 
+      - name: f2021_f1
+        identifier: f2021_f1a_rv
+      - name: f2020_f1   
+        identifier: f1920_f1a_rv
+      - name: f2019_f1
+        identifier: f1819_f1a_rv
+      - name: f2018_f1
+        identifier: f1718_f1a_rv
+      - name: f2017_f1 
+        identifier: f1617_f1a_rv
+      - name: f2016_f1
+        identifier: f1516_f1a_rv
+      - name: f2015_f1
+        identifier: f1415_f1a_rv
+      - name: f2014_f1
+        identifier: f1314_f1a_rv
+      - name: f2013_f1
+        identifier: f1213_f1a_rv
+      - name: f2012_f1
+        identifier: f1112_f1a_rv
+      - name: f2011_f1
+        identifier: f1011_f1a_rv
+      - name: f2010_f1
+        identifier: f0910_f1a_rv
+      - name: f2009_f1
+        identifier: f0809_f1a_rv
+      - name: f2008_f1
+        identifier: f0708_f1a_rv
+      - name: f2007_f1 
+        identifier: f0607_f1a_rv
+      - name: f2006_f1
+        identifier: f0506_f1a_rv
+      - name: f2005_f1 
+        identifier: f0405_f1a_rv
+      - name: f2004_f1
+        identifier: f0304_f1a_rv
+      - name: f2003_f1
+        identifier: f0203_f1a
+      - name: f2002_f1
+        identifier: f0102_f1a
+      - name: f2001_f1
+        identifier: f0001_f1 
+      - name: f2000_f1
+        identifier: f9900_f1
+
+      # Private not-for-profit Institution Finance: fyyyy_f2
+      - name: f2023_f2
+        identifier: f2223_f2
+      - name: f2022_f2
+        identifier: f2122_f2_rv 
+      - name: f2021_f2
+        identifier: f2021_f2_rv
+      - name: f2020_f2   
+        identifier: f1920_f2_rv
+      - name: f2019_f2
+        identifier: f1819_f2_rv
+      - name: f2018_f2
+        identifier: f1718_f2_rv
+      - name: f2017_f2 
+        identifier: f1617_f2_rv
+      - name: f2016_f2
+        identifier: f1516_f2_rv
+      - name: f2015_f2
+        identifier: f1415_f2_rv
+      - name: f2014_f2
+        identifier: f1314_f2_rv
+      - name: f2013_f2
+        identifier: f1213_f2_rv
+      - name: f2012_f2
+        identifier: f1112_f2_rv
+      - name: f2011_f2
+        identifier: f1011_f2_rv
+      - name: f2010_f2
+        identifier: f0910_f2_rv
+      - name: f2009_f2
+        identifier: f0809_f2_rv
+      - name: f2008_f2
+        identifier: f0708_f2_rv
+      - name: f2007_f2 
+        identifier: f0607_f2_rv
+      - name: f2006_f2
+        identifier: f0506_f2_rv
+      - name: f2005_f2 
+        identifier: f0405_f2_rv
+      - name: f2004_f2
+        identifier: f0304_f2_rv
+      - name: f2003_f2
+        identifier: f0203_f2
+      - name: f2002_f2
+        identifier: f0102_f2
+      - name: f2001_f2
+        identifier: f0001_f2
+      - name: f2000_f2
+        identifier: f9900_f2
+
+      # Private for-profit Institution Finance: fyyyy_f3
+      - name: f2023_f3
+        identifier: f2223_f3
+      - name: f2022_f3
+        identifier: f2122_f3_rv 
+      - name: f2021_f3
+        identifier: f2021_f3_rv
+      - name: f2020_f3   
+        identifier: f1920_f3_rv
+      - name: f2019_f3
+        identifier: f1819_f3_rv
+      - name: f2018_f3
+        identifier: f1718_f3_rv
+      - name: f2017_f3 
+        identifier: f1617_f3_rv
+      - name: f2016_f3
+        identifier: f1516_f3_rv
+      - name: f2015_f3
+        identifier: f1415_f3_rv
+      - name: f2014_f3
+        identifier: f1314_f3_rv
+      - name: f2013_f3
+        identifier: f1213_f3_rv
+      - name: f2012_f3
+        identifier: f1112_f3_rv
+      - name: f2011_f3
+        identifier: f1011_f3_rv
+      - name: f2010_f3
+        identifier: f0910_f3_rv
+      - name: f2009_f3
+        identifier: f0809_f3_rv
+      - name: f2008_f3
+        identifier: f0708_f3_rv
+      - name: f2007_f3 
+        identifier: f0607_f3_rv
+      - name: f2006_f3
+        identifier: f0506_f3_rv
+      - name: f2005_f3 
+        identifier: f0405_f3_rv
+      - name: f2004_f3
+        identifier: f0304_f3_rv
+      - name: f2003_f3
+        identifier: f0203_f3
+      - name: f2002_f3
+        identifier: f0102_f3
+      - name: f2001_f3
+        identifier: f0001_f3
+      - name: f2000_f3
+        identifier: f9900_f3
+      # Graduation Rates: gryyyy
+      - name: gr2023
+        identifier: gr2023
+      - name: gr2022
+        identifier: gr2022_rv
+      - name: gr2021
+        identifier: gr2021_rv
+      - name: gr2020
+        identifier: gr2020_rv
+      - name: gr2019
+        identifier: gr2019_rv
+      - name: gr2018
+        identifier: gr2018_rv
+      - name: gr2017 
+        identifier: gr2017_rv
+      - name: gr2016
+        identifier: gr2016_rv
+      - name: gr2015
+        identifier: gr2015_rv
+      - name: gr2014
+        identifier: gr2014_rv
+      - name: gr2013
+        identifier: gr2013_rv
+      - name: gr2012
+        identifier: gr2012_rv
+      - name: gr2011
+        identifier: gr2011_rv
+      - name: gr2010
+        identifier: gr2010_rv
+      - name: gr2009
+        identifier: gr2009_rv
+      - name: gr2008
+        identifier: gr2008_rv
+      - name: gr2007 
+        identifier: gr2007_rv
+      - name: gr2006
+        identifier: gr2006_rv
+      - name: gr2005 
+        identifier: gr2005_rv
+      - name: gr2004
+        identifier: gr2004_rv
+      - name: gr2003
+        identifier: gr2003
+      - name: gr2002
+        identifier: gr2002
+      - name: gr2001
+        identifier: gr2001
+      - name: gr2000
+        identifier: gr2000
+     
+      # Institutional Characteristics: hdyyyy
+      - name: hd2023
+        identifier: hd2023
+      - name: hd2022
+        identifier: hd2022
+      - name: hd2021
+        identifier: hd2021
+      - name: hd2020
+        identifier: hd2020
+      - name: hd2019
+        identifier: hd2019
+      - name: hd2018
+        identifier: hd2018
+      - name: hd2017 
+        identifier: hd2017
+      - name: hd2016
+        identifier: hd2016
+      - name: hd2015
+        identifier: hd2015
+      - name: hd2014
+        identifier: hd2014
+      - name: hd2013
+        identifier: hd2013
+      - name: hd2012
+        identifier: hd2012
+      - name: hd2011
+        identifier: hd2011
+      - name: hd2010
+        identifier: hd2010 
+      - name: hd2009
+        identifier: hd2009
+      - name: hd2008
+        identifier: hd2008
+      - name: hd2007 
+        identifier: hd2007
+      - name: hd2006
+        identifier: hd2006
+      - name: hd2005 
+        identifier: hd2005
+      - name: hd2004
+        identifier: hd2004
+      - name: hd2003
+        identifier: hd2003
+      - name: hd2002
+        identifier: hd2002
+      - name: hd2001
+        identifier: fa2001hd
+      - name: hd2000
+        identifier: fa2000hd

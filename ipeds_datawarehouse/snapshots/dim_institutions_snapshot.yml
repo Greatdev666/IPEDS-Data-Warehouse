@@ -1,0 +1,27 @@
+snapshots:
+  - name: dim_institutions_snapshot
+    description: "Tracks changes to institutions over time for SCD (latest info per UNITID)"
+    target_schema: Silver_Gold  
+    target_database: IPEDSDataWarehouse  
+    strategy: check
+    unique_key: unit_id
+    check_cols: 
+      - instnm
+      - ialias
+      - city
+      - stabbr
+      - zip
+      - obereg
+      - longitud
+      - latitude
+      - sector
+      - iclevel
+      - control
+      - hloffer
+      - ugoffer
+      - groffer
+      - hdegofr1
+      - instsize
+      - webaddr
+      - adminurl
+      - faidurl

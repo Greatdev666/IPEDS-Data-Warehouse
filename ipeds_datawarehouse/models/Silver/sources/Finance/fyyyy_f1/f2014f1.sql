@@ -1,0 +1,84 @@
+ WITH f2014_f1 AS (
+    SELECT * FROM {{ source('bronze', 'f2014_f1') }}
+ )
+ , f2014_f1_renamed AS (
+    SELECT
+        CAST(2014 AS INT) AS "YEAR",
+        -- identity
+        CAST("UNITID" AS INT) AS "UNITID",
+
+        -- Assets & Liabilities
+        CAST("F1A01" AS NUMERIC) AS "F1A01",
+        CAST("F1A05" AS NUMERIC) AS "F1A05",
+        CAST("F1A06" AS NUMERIC) AS "F1A06",
+        CAST(NULL AS NUMERIC) AS "F1A19",
+        CAST("F1A09" AS NUMERIC) AS "F1A09",
+        CAST("F1A12" AS NUMERIC) AS "F1A12",
+        CAST("F1A13" AS NUMERIC) AS "F1A13",
+        CAST(NULL AS NUMERIC) AS "F1A20",
+
+        -- Net Position
+        CAST("F1A14" AS NUMERIC) AS "F1A14",
+        CAST("F1A15" AS NUMERIC) AS "F1A15",
+        CAST("F1A16" AS NUMERIC) AS "F1A16",
+        CAST("F1A17" AS NUMERIC) AS "F1A17",
+        CAST("F1A18" AS NUMERIC) AS "F1A18",
+
+        -- PPE
+        CAST("F1A27T4" AS NUMERIC) AS "F1A27T4",
+        CAST("F1A284" AS NUMERIC) AS "F1A284",
+        CAST("F1A274" AS NUMERIC) AS "F1A274",
+
+        -- Operating Revenues
+        CAST("F1B01" AS NUMERIC) AS "F1B01",
+        CAST("F1B02" AS NUMERIC) AS "F1B02",
+        CAST("F1B03" AS NUMERIC) AS "F1B03",
+        CAST("F1B04B" AS NUMERIC) AS "F1B04B",
+        CAST("F1B05" AS NUMERIC) AS "F1B05",
+        CAST("F1B09" AS NUMERIC) AS "F1B09",
+
+        -- Non-operating Revenues
+        CAST("F1B10" AS NUMERIC) AS "F1B10",
+        CAST("F1B11" AS NUMERIC) AS "F1B11",
+        CAST("F1B13" AS NUMERIC) AS "F1B13",
+        CAST("F1B16" AS NUMERIC) AS "F1B16",
+        CAST("F1B17" AS NUMERIC) AS "F1B17",
+        CAST("F1B19" AS NUMERIC) AS "F1B19",
+        CAST("F1B27" AS NUMERIC) AS "F1B27",
+        CAST("F1B25" AS NUMERIC) AS "F1B25",
+
+        -- Functional Expenses
+        CAST("F1C011" AS NUMERIC) AS "F1C011",
+        CAST("F1C021" AS NUMERIC) AS "F1C021",
+        CAST("F1C031" AS NUMERIC) AS "F1C031",
+        CAST("F1C051" AS NUMERIC) AS "F1C051",
+        CAST("F1C061" AS NUMERIC) AS "F1C061",
+        CAST("F1C071" AS NUMERIC) AS "F1C071",
+        CAST("F1C101" AS NUMERIC) AS "F1C101",
+        CAST("F1C111" AS NUMERIC) AS "F1C111",
+        CAST("F1C141" AS NUMERIC) AS "F1C141",
+        CAST("F1C191" AS NUMERIC) AS "F1C191",
+        CAST("F1B06" AS NUMERIC) AS "F1B06",
+        CAST("F1B26" AS NUMERIC) AS "F1B26",
+
+        -- Pension / OPEB
+        CAST(NULL AS NUMERIC) AS "F1M01",
+        CAST(NULL AS NUMERIC) AS "F1M02",
+        CAST(NULL AS NUMERIC) AS "F1M05",
+        CAST(NULL AS NUMERIC) AS "F1M06",
+
+        -- Scholarships & Discounts
+        CAST("F1E01" AS NUMERIC) AS "F1E01",
+        CAST("F1E07" AS NUMERIC) AS "F1E07",
+        CAST("F1E10" AS NUMERIC) AS "F1E10",
+        CAST("F1E11" AS NUMERIC) AS "F1E11",
+
+        -- Endowment
+        CAST("F1H01" AS NUMERIC) AS "F1H01",
+        CAST("F1H02" AS NUMERIC) AS "F1H02",
+        CAST(NULL AS NUMERIC) AS "F1H03"
+
+    FROM f2014_f1
+ )
+
+ SELECT * FROM f2014_f1_renamed

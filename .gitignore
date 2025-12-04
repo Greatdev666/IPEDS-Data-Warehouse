@@ -1,0 +1,15 @@
+# dbt + Python standard ignores
+target/
+dbt_packages/
+logs/
+__pycache__/
+*.pyc
+.env
+*.sqlite
+
+# VS Code workspace files
+.vscode/
+
+# OS junk
+.DS_Store
+Thumbs.db
