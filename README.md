@@ -22,7 +22,27 @@ This project demonstrates real-world analytics engineering: handling messy legac
 
 - Live dbt docs: [soon](#)
 - Power BI dashboard previews: coming soon
-- BigQuery: [/ipeds_public_datasets](https://console.cloud.google.com/bigquery?ws=!1m4!1m3!3m2!1sipeds-public!2sipeds_public) (exported CSVs for marts/dims and few facts. Only datasets that are below 100mb are made public)
+- Live marts(public on BigQuery): [/ipeds_public_datasets](https://console.cloud.google.com/bigquery?ws=!1m4!1m3!3m2!1sipeds-public!2sipeds_public) (exported CSVs for marts/dims and few facts. Only datasets that are below 100mb are made public)
+
+  ---
+
+## Tech Stack
+
+| Layer               | Tool / Technology                                 | Purpose |
+|---------------------|---------------------------------------------------|--------|
+| Planning            | Notion                                            | Project roadmap, tasks, documentation |
+| Architecture        | Draw.io                                           | Pipeline & data model diagrams |
+| Data Source         | IPEDS (U.S. Dept of Education) – 471 raw files   | 2000–2023 higher education surveys |
+| Ingestion (Bronze)  | Python (pandas, requests, zipfile)                | Automated download + load |
+| Warehouse           | PostgreSQL → Snowflake-ready design               | Local dev + cloud portable |
+| Transformation      | dbt Core (Jinja SQL + Jinja YAML)                 | 320+ models, macros, tests, snapshots |
+| Code Editor         | VS Code + dbt extensions                          | Development |
+| Testing & Docs      | dbt tests (1200+ lines), schema.yml, dbt docs     | Data quality & lineage |
+| Version Control     | Git + GitHub                                      | Full history & collaboration |
+| Public Sharing      | Google BigQuery (public dataset)                  | Analyst & recruiter access |
+| Visualization       | Power BI (in progress)                            | Drag-and-drop dashboards |
+
+---
 
 ## Dataset Selection and Initial Analysis
 The IPEDS dataset was chosen for its depth, real-world messiness, and high business relevance – covering 2.6 GB of raw Zip files from the U.S. Department of Education (NCES). It includes annual surveys on institutional characteristics, enrollment, completions, finance, and more, making it ideal for demonstrating regulated data handling at scale.
