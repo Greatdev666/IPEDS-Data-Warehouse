@@ -104,7 +104,7 @@ Detailed layer-specific docs are linked below – no repetition here for brevity
 - [Marts & Metrics README](https://github.com/Greatdev666/IPEDS-Data-Warehouse/blob/master/ipeds_datawarehouse/models/Mart/Mart_Readme.md): Metric definitions and quality rules.
 - dbt Docs: [Interactive Lineage](https://your-username.github.io/ipeds-warehouse).
 - Diagrams: Architecture (above), star schema in Gold README.
-- Exports: CSVs for marts/dims in [ipeds_public](https://console.cloud.google.com/bigquery?ws=!1m4!1m3!3m2!1sipeds-public!2sipeds_public) or Google BigQuery public dataset (your-project.ipeds_public).
+- Exports: CSVs for marts/dims in [ipeds_public](https://console.cloud.google.com/bigquery?ws=!1m4!1m3!3m2!1sipeds-public!2sipeds_public) 
 
 ## How to Run/Reproduce
 1. Clone repo: git clone https://greatdev666.github.io/IPEDS-Data-Warehouse.
