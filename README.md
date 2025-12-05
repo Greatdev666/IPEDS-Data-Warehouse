@@ -8,8 +8,7 @@
 ----------
 ## Data Architecture
 ![Architecture Diagram](https://github.com/Greatdev666/IPEDS-Data-Warehouse/blob/master/Architectures/Dataflow%20Overview.png)  
-(High-level medallion architecture: Bronze → Silver → Gold → Marts & Metrics → Dashboards. See [dbt docs lineage graph](https://Greatdev666/ipeds-warehouse/lineage.html) for interactive model dependencies.)
-
+(High-level medallion architecture: Bronze → Silver → Gold → Marts & Metrics → Dashboards. 
 ----------
 ## Core Data Model (Star Schema)
 ```mermaid
@@ -236,7 +235,7 @@ Key outcomes:
 
 This project demonstrates real-world analytics engineering: handling messy legacy data, mid-project migration, and delivering analyst-ready outputs without cutting corners.
 
-- Live dbt docs: [soon](#)
+- Live dbt docs: dbt docs generate and dbt docs serve 
 - Power BI dashboard previews: coming soon
 - Live marts(public on BigQuery): [/ipeds_public_datasets](https://console.cloud.google.com/bigquery?ws=!1m4!1m3!3m2!1sipeds-public!2sipeds_public) (exported CSVs for marts/dims and few facts. Only datasets that are below 100mb are made public)
 
@@ -384,7 +383,6 @@ Detailed layer-specific docs are linked below – no repetition here for brevity
 - [Silver README](https://github.com/Greatdev666/IPEDS-Data-Warehouse/blob/master/ipeds_datawarehouse/models/Silver/README.md): Transformations and union logic.
 - [Gold README](https://github.com/Greatdev666/IPEDS-Data-Warehouse/blob/master/ipeds_datawarehouse/models/Gold/Gold_readme.md): Star schema and facts/dims.
 - [Marts & Metrics README](https://github.com/Greatdev666/IPEDS-Data-Warehouse/blob/master/ipeds_datawarehouse/models/Mart/Mart_Readme.md): Metric definitions and quality rules.
-- dbt Docs: [Interactive Lineage](https://your-username.github.io/ipeds-warehouse).
 - Diagrams: Architecture (above), star schema in Gold README.
 - Exports: CSVs for marts/dims in [ipeds_public](https://console.cloud.google.com/bigquery?ws=!1m4!1m3!3m2!1sipeds-public!2sipeds_public) 
 
@@ -392,7 +390,7 @@ Detailed layer-specific docs are linked below – no repetition here for brevity
 1. Clone repo: git clone https://greatdev666.github.io/IPEDS-Data-Warehouse.
 2. Install dbt + PostgreSQL.
 3. Download raw dataset from https://zenodo.org/records/15028111
-4. Select files available in ([sources.yml](https://github.com/Greatdev666/IPEDS-Data-Warehouse/blob/master/ipeds_datawarehouse/models/Silver/bronze.yml)).
+4. Select from source after unzipping files available in ([sources.yml](https://github.com/Greatdev666/IPEDS-Data-Warehouse/blob/master/ipeds_datawarehouse/models/Silver/bronze.yml)) in a folder.
 5. Run ingestion scripts in [/Bonze](https://github.com/Greatdev666/IPEDS-Data-Warehouse/blob/master/Bronze/connection_and_loading_bronze.ipynb) (Python).
 6. dbt seed && dbt run for bronze/silver/gold.
 7. dbt test for validation.
