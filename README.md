@@ -12,6 +12,8 @@
 
 ----------
 ## Core Data Model (Star Schema)
+```mermaid
+flowchart LR
 erDiagram
     DIM_ACADEMIC_YEAR ||--o{ FACT_ADMISSIONS : "academic_year_id"
     DIM_ACADEMIC_YEAR ||--o{ FACT_COMPLETION_AWARD_LEVEL : "academic_year_id"
@@ -39,7 +41,7 @@ erDiagram
     DIM_INSTITUTIONS ||--o{ FACT_GRADUATES_BY_RACE : "unit_id"
     DIM_INSTITUTIONS ||--o{ FACT_GRADUATES_TOTAL : "unit_id"
     DIM_INSTITUTIONS ||--o{ FACT_LEARNING_MODE : "unit_id"
-
+```
 
 
 ## Project Overview
