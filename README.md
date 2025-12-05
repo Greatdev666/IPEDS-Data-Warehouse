@@ -8,7 +8,7 @@
 ----------
 ## Data Architecture
 ![Architecture Diagram](https://github.com/Greatdev666/IPEDS-Data-Warehouse/blob/master/Architectures/Dataflow%20Overview.png)  
-(High-level medallion architecture: Bronze → Silver → Gold → Marts & Metrics → Dashboards. 
+#### High-level medallion architecture: Bronze → Silver → Gold → Marts & Metrics → Dashboards. 
 ----------
 ## Core Data Model (Star Schema)
 ```mermaid
