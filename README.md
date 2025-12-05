@@ -19,10 +19,10 @@ This project demonstrates real-world analytics engineering: handling messy legac
 
 - Live dbt docs: [https://your-username.github.io/ipeds-warehouse](https://your-username.github.io/ipeds-warehouse)
 - Power BI dashboard previews: coming soon
-- BigQuery: [/ipeds_public_datasets](https://console.cloud.google.com/bigquery?ws=!1m4!1m3!3m2!1sipeds-public!2sipeds_public) (exported CSVs for marts/dims and few facts only datasets that are below 100mb are made public)
+- BigQuery: [/ipeds_public_datasets](https://console.cloud.google.com/bigquery?ws=!1m4!1m3!3m2!1sipeds-public!2sipeds_public) (exported CSVs for marts/dims and few facts. Only datasets that are below 100mb are made public)
 
 ## Dataset Selection and Initial Analysis
-The IPEDS dataset was chosen for its depth, real-world messiness, and high business relevance – covering 2.6 GB of raw CSV/Zip files from the U.S. Department of Education (NCES). It includes annual surveys on institutional characteristics, enrollment, completions, finance, and more, making it ideal for demonstrating regulated data handling at scale.
+The IPEDS dataset was chosen for its depth, real-world messiness, and high business relevance – covering 2.6 GB of raw Zip files from the U.S. Department of Education (NCES). It includes annual surveys on institutional characteristics, enrollment, completions, finance, and more, making it ideal for demonstrating regulated data handling at scale.
 
 - *Study process*: Reviewed the full IPEDS data dictionary (500+ surveys), analyzed schema changes across 24 years (e.g., naming inconsistencies pre-2011, suppressed values like ".", scientific notation in text fields).
 - *Core files selected*: Focused on high-impact surveys for a balanced warehouse:
@@ -43,7 +43,7 @@ Raw data was ingested as-is to preserve fidelity and enable auditing.
 
 - *Initial approach*: Bulk INSERT scripts in SQL Server for fast loading of 471 IPEDS files.
 - *Evolution*: Switched to Python for automated ingestion (handling zips, CSVs, schema detection) and file creation. Scripts processed 2.6 GB in batches, with error handling for inconsistent headers.
-- *Bronze output*: 471 raw tables, ~12.5M rows, no transformations – pure ELT pattern.
+- *Bronze output*: 471 raw tables, no transformations – pure ELT pattern.
 
 Tech: Python (pandas for schema inference), SQL Server (initial), PostgreSQL (final).
 
