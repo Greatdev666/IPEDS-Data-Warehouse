@@ -55,7 +55,7 @@ Transformations were managed with dbt for version control, testing, and modulari
 - *Challenges handled*: Trailing spaces, inconsistent naming (COALESCE for old/new conventions), data types (casting "[null]" to SQL NULL), scientific notation parsing.
 - *Jinja usage*: Macros for reusable logic (e.g., un-pivoting race columns); YAML for schema definitions.
 
-See [Silver README](/models/silver/README.md) for detailed transformations.
+See [Silver README](https://github.com/Greatdev666/IPEDS-Data-Warehouse/blob/master/ipeds_datawarehouse/models/Silver/README.md) for detailed transformations.
 
 ## Challenges and Mid-Project Migration
 - *SQL Server failure*: Disk space issues mid-silver layer (C: drive full during 471 bronze loads).
@@ -73,7 +73,7 @@ Built a Kimball-style star schema for query efficiency and BI readiness.
 - *Facts*: Enrollment (full-year/race), completions (total/by race/award level), finance (un-pivoted across F1/F2/F3), graduation, admissions.
 - *Dimensions*: Institutions, academic year, finance category, award level, race/ethnicity, learning mode.
 
-See [Gold README](/models/gold/README.md) for schema diagram and details.
+See [Gold README](https://github.com/Greatdev666/IPEDS-Data-Warehouse/blob/master/ipeds_datawarehouse/models/Gold/Gold_readme.md) for schema diagram and details.
 
 ## Marts & Metrics Layer
 Created analyst-facing marts with pre-calculated business metrics for drag-and-drop BI.
@@ -82,7 +82,7 @@ Created analyst-facing marts with pre-calculated business metrics for drag-and-d
 - *Categories*: Admissions (yield rate, funnels), enrollment (YoY, per-student), finance (per-student, ratios), outcomes (retention/graduation rates), race breakdowns (equity gaps, pipeline efficiency).
 - *Logic*: Window functions for YoY, CASE for safe ratios, aggregations by institution/year/race.
 
-See [Marts & Metrics README](/models/marts/README.md) for full metric definitions and quality rules.
+See [Marts & Metrics README](https://github.com/Greatdev666/IPEDS-Data-Warehouse/blob/master/ipeds_datawarehouse/models/Mart/Mart_Readme.md) for full metric definitions and quality rules.
 
 ## Tech Stack
 - *Ingestion*: Python (automated CSV/Zip processing, pandas for schema handling).
@@ -96,21 +96,22 @@ See [Marts & Metrics README](/models/marts/README.md) for full metric definition
 ## Documentation and Artifacts
 Detailed layer-specific docs are linked below – no repetition here for brevity.
 
-- [Silver README](/models/silver/README.md): Transformations and union logic.
-- [Gold README](/models/gold/README.md): Star schema and facts/dims.
-- [Marts & Metrics README](/models/marts/README.md): Metric definitions and quality rules.
+- [Silver README](https://github.com/Greatdev666/IPEDS-Data-Warehouse/blob/master/ipeds_datawarehouse/models/Silver/README.md): Transformations and union logic.
+- [Gold README](https://github.com/Greatdev666/IPEDS-Data-Warehouse/blob/master/ipeds_datawarehouse/models/Gold/Gold_readme.md): Star schema and facts/dims.
+- [Marts & Metrics README](https://github.com/Greatdev666/IPEDS-Data-Warehouse/blob/master/ipeds_datawarehouse/models/Mart/Mart_Readme.md): Metric definitions and quality rules.
 - dbt Docs: [Interactive Lineage](https://your-username.github.io/ipeds-warehouse).
 - Diagrams: Architecture (above), star schema in Gold README.
-- Exports: CSVs for marts/dims in [/releases](/releases) or Google BigQuery public dataset (your-project.ipeds_public).
+- Exports: CSVs for marts/dims in [ipeds_public](https://console.cloud.google.com/bigquery?ws=!1m4!1m3!3m2!1sipeds-public!2sipeds_public) or Google BigQuery public dataset (your-project.ipeds_public).
 
 ## How to Run/Reproduce
-1. Clone repo: git clone https://github.com/your-username/ipeds-warehouse.
+1. Clone repo: git clone https://greatdev666.github.io/IPEDS-Data-Warehouse.
 2. Install dbt + PostgreSQL.
-3. Download IPEDS data (links in [sources.yml](/sources/sources.yml)).
-4. Run ingestion scripts in [/Bonze](/Bronze\connection_and_loading_bronze.ipynb) (Python).
-5. dbt seed && dbt run for bronze/silver/gold.
-6. dbt test for validation.
-7. Connect BI tool to PostgreSQL or use exported CSVs.
+3. Download raw dataset from https://zenodo.org/records/15028111
+4. Select files available in ([sources.yml](/sources/sources.yml)).
+5. Run ingestion scripts in [/Bonze](/Bronze\connection_and_loading_bronze.ipynb) (Python).
+6. dbt seed && dbt run for bronze/silver/gold.
+7. dbt test for validation.
+8. Connect BI tool to PostgreSQL or use exported CSVs.
 
 ## Future Enhancements
 - Integrate ML (e.g., graduation prediction).
