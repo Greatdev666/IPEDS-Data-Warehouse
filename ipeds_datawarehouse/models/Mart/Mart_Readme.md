@@ -41,6 +41,7 @@ This README focuses on the Gold Layer, which includes:
 * 🎨 **mart_race_enrollment**  
 * 🎨 **mart_race_completions**  
 * 🎨 **mart_race_graduates**
+* 🎨 **mart_institution_per_year**
 
 Each mart is fully documented with `schema.yml` and unit-tested for integrity.
 
@@ -53,10 +54,10 @@ Each mart follows Kimball-style modeling:
 
 * Explicit fact-table grain  
 * Standardized dimensional joins using:  
-  * `dim_institutions`  
-  * `dim_academic_year`  
-  * `dim_award_level`  
-  * `dim_finance_category`
+  * `institutions`  
+  * `academic_year`  
+  * `award_level`  
+  * `finance_category`
 
 ### ✔ **Surrogate Keys & Stable PKs**
 * `unit_id + academic_year_id` is consistent  
