@@ -113,30 +113,31 @@ erDiagram
         int academic_year_id
         int unit_id
         int finance_category_sk
-        float amount
+        numeric amount
     }
 
     FACT_LEARNING_MODE {
         int academic_year_id
         int unit_id
-        int online_students
-        int oncampus_students
+        int fully_online
+        int hybrid
+        int in_person
     }
 
     MART_FINANCE {
         int academic_year_id
         int unit_id
-        float total_revenue
-        float total_expenses
-        float tuition_revenue
+        numeric total_revenue
+        numeric total_expenses
+        numeric tuition_revenue
     }
 
     MART_FINANCE_METRICS {
         int academic_year_id
         int unit_id
-        float revenue_per_student
-        float expenses_per_student
-        float net_position
+        numeric revenue_per_student
+        numeric expenses_per_student
+        numeric net_position
     }
 
     MART_RACE {
@@ -151,16 +152,16 @@ erDiagram
     MART_ENROLLMENT_METRICS {
         int academic_year_id
         int unit_id
-        float yr_over_yr_growth
-        float retention_rate
+        numeric yr_over_yr_growth
+        numeric retention_rate
     }
 
     MART_COMPLETION_METRICS {
         int academic_year_id
         int unit_id
-        float completion_rate
-        float completion_gap_urm
-        float equity_index
+        numeric completion_rate
+        numeric completion_gap_urm
+        numeric equity_index
     }
 
     MART_INSTITUTION_PER_YEAR {
@@ -219,6 +220,7 @@ erDiagram
     DIM_RACE_ETHNICITY ||--o{ MART_RACE : race_code
 
     DIM_FINANCE_CATEGORY ||--o{ FACT_FINANCE : finance_category_sk
+
 
 ```
 
