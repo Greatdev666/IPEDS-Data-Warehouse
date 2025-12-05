@@ -13,7 +13,6 @@
 ----------
 ## Core Data Model (Star Schema)
 ```mermaid
-flowchart LR
 erDiagram
     DIM_ACADEMIC_YEAR ||--o{ FACT_ADMISSIONS : "academic_year_id"
     DIM_ACADEMIC_YEAR ||--o{ FACT_COMPLETION_AWARD_LEVEL : "academic_year_id"
