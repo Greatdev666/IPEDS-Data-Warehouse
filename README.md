@@ -108,7 +108,7 @@ Detailed layer-specific docs are linked below – no repetition here for brevity
 2. Install dbt + PostgreSQL.
 3. Download raw dataset from https://zenodo.org/records/15028111
 4. Select files available in ([sources.yml](https://github.com/Greatdev666/IPEDS-Data-Warehouse/blob/master/ipeds_datawarehouse/models/Silver/bronze.yml)).
-5. Run ingestion scripts in [/Bonze](/Bronze\connection_and_loading_bronze.ipynb) (Python).
+5. Run ingestion scripts in [/Bonze](https://github.com/Greatdev666/IPEDS-Data-Warehouse/blob/master/Bronze/connection_and_loading_bronze.ipynb) (Python).
 6. dbt seed && dbt run for bronze/silver/gold.
 7. dbt test for validation.
 8. Connect BI tool to PostgreSQL or use exported CSVs.
