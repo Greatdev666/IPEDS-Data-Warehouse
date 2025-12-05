@@ -20,7 +20,7 @@ Key outcomes:
 
 This project demonstrates real-world analytics engineering: handling messy legacy data, mid-project migration, and delivering analyst-ready outputs without cutting corners.
 
-- Live dbt docs: [https://your-username.github.io/ipeds-warehouse](https://your-username.github.io/ipeds-warehouse)
+- Live dbt docs: [soon](#)
 - Power BI dashboard previews: coming soon
 - BigQuery: [/ipeds_public_datasets](https://console.cloud.google.com/bigquery?ws=!1m4!1m3!3m2!1sipeds-public!2sipeds_public) (exported CSVs for marts/dims and few facts. Only datasets that are below 100mb are made public)
 
