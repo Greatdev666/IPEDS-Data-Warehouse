@@ -10,6 +10,38 @@
 ![Architecture Diagram](https://github.com/Greatdev666/IPEDS-Data-Warehouse/blob/master/Architectures/Dataflow%20Overview.png)  
 (High-level medallion architecture: Bronze → Silver → Gold → Marts & Metrics → Dashboards. See [dbt docs lineage graph](https://Greatdev666/ipeds-warehouse/lineage.html) for interactive model dependencies.)
 
+----------
+## Core Data Model (Star Schema)
+erDiagram
+    DIM_ACADEMIC_YEAR ||--o{ FACT_ADMISSIONS : "academic_year_id"
+    DIM_ACADEMIC_YEAR ||--o{ FACT_COMPLETION_AWARD_LEVEL : "academic_year_id"
+    DIM_ACADEMIC_YEAR ||--o{ FACT_COMPLETION_BY_RACE : "academic_year_id"
+    DIM_ACADEMIC_YEAR ||--o{ FACT_COMPLETION_TOTAL : "academic_year_id"
+    DIM_ACADEMIC_YEAR ||--o{ FACT_ENROLLMENT_FULLYEAR_TOTAL : "academic_year_id"
+    DIM_ACADEMIC_YEAR ||--o{ FACT_ENROLLMENT_FULLYEAR_RACE : "academic_year_id"
+    DIM_ACADEMIC_YEAR ||--o{ FACT_FINANCE : "academic_year_id"
+    DIM_ACADEMIC_YEAR ||--o{ FACT_GRADUATES_BY_RACE : "academic_year_id"
+    DIM_ACADEMIC_YEAR ||--o{ FACT_GRADUATES_TOTAL : "academic_year_id"
+    DIM_ACADEMIC_YEAR ||--o{ FACT_LEARNING_MODE : "academic_year_id"
+
+    DIM_FINANCE_CATEGORY ||--o{ FACT_FINANCE : "finance_category_sk"
+    DIM_AWARD_LEVEL ||--o{ FACT_COMPLETION_AWARD_LEVEL : "award_level_code"
+    DIM_RACE_ETHNICITY ||--o{ FACT_COMPLETION_BY_RACE : "race_code"
+    DIM_RACE_ETHNICITY ||--o{ FACT_ENROLLMENT_FULLYEAR_RACE : "race_code"
+    DIM_RACE_ETHNICITY ||--o{ FACT_GRADUATES_BY_RACE : "race_code"
+    DIM_INSTITUTIONS ||--o{ FACT_ADMISSIONS : "unit_id"
+    DIM_INSTITUTIONS ||--o{ FACT_COMPLETION_AWARD_LEVEL : "unit_id"
+    DIM_INSTITUTIONS ||--o{ FACT_COMPLETION_BY_RACE : "unit_id"
+    DIM_INSTITUTIONS ||--o{ FACT_COMPLETION_TOTAL : "unit_id"
+    DIM_INSTITUTIONS ||--o{ FACT_ENROLLMENT_FULLYEAR_TOTAL : "unit_id"
+    DIM_INSTITUTIONS ||--o{ FACT_ENROLLMENT_FULLYEAR_RACE : "unit_id"
+    DIM_INSTITUTIONS ||--o{ FACT_FINANCE : "unit_id"
+    DIM_INSTITUTIONS ||--o{ FACT_GRADUATES_BY_RACE : "unit_id"
+    DIM_INSTITUTIONS ||--o{ FACT_GRADUATES_TOTAL : "unit_id"
+    DIM_INSTITUTIONS ||--o{ FACT_LEARNING_MODE : "unit_id"
+
+
+
 ## Project Overview
 This repository hosts a fully modern, production-grade data warehouse built on the Integrated Postsecondary Education Data System (IPEDS) dataset – one of the largest and most complex public education datasets in the U.S. Spanning 2000–2023, it covers institutional performance, enrollment, completions, finance, and equity metrics for thousands of U.S. higher-education institutions.
 
