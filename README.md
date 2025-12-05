@@ -3,7 +3,7 @@
 *A Complete End-to-End Data Platform for U.S. Higher Education Insights*  
 *From 2.6 GB Raw Government Data*  
 *24 years Messy Reports to Production-Ready Analytics – Built Solo*
-
+----------
 ![Architecture Diagram](https://github.com/Greatdev666/IPEDS-Data-Warehouse/blob/master/Architectures/Dataflow%20Overview.png)  
 (High-level medallion architecture: Bronze → Silver → Gold → Marts & Metrics → Dashboards. See [dbt docs lineage graph](https://Greatdev666/ipeds-warehouse/lineage.html) for interactive model dependencies.)
 
