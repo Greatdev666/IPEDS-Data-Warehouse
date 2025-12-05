@@ -17,9 +17,9 @@ Key outcomes:
 
 This project demonstrates real-world analytics engineering: handling messy legacy data, mid-project migration, and delivering analyst-ready outputs without cutting corners.
 
-Live dbt docs: [https://your-username.github.io/ipeds-warehouse](https://your-username.github.io/ipeds-warehouse)  
-Power BI dashboard previews: coming soon
-BigQuery: [/ipeds_public_datasets](https://console.cloud.google.com/bigquery?ws=!1m4!1m3!3m2!1sipeds-public!2sipeds_public) (exported CSVs for marts/dims and few facts only datasets that are below 100mb are made public)  
+- Live dbt docs: [https://your-username.github.io/ipeds-warehouse](https://your-username.github.io/ipeds-warehouse)
+- Power BI dashboard previews: coming soon
+- BigQuery: [/ipeds_public_datasets](https://console.cloud.google.com/bigquery?ws=!1m4!1m3!3m2!1sipeds-public!2sipeds_public) (exported CSVs for marts/dims and few facts only datasets that are below 100mb are made public)
 
 ## Dataset Selection and Initial Analysis
 The IPEDS dataset was chosen for its depth, real-world messiness, and high business relevance – covering 2.6 GB of raw CSV/Zip files from the U.S. Department of Education (NCES). It includes annual surveys on institutional characteristics, enrollment, completions, finance, and more, making it ideal for demonstrating regulated data handling at scale.
