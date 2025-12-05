@@ -44,6 +44,52 @@ This project demonstrates real-world analytics engineering: handling messy legac
 
 ---
 
+# Project Requirements & Objectives
+*IPEDS Modern Analytics Warehouse*
+
+## 1. Project Aim
+To transform the raw, fragmented, and historically inconsistent U.S. IPEDS higher-education dataset into a *single, trusted, analytics-ready platform* that enables institutional leaders, researchers, and policymakers to answer high-impact questions with confidence and speed.
+
+## 2. Core Business Objectives
+| # | Objective                                                                 | Delivered? |
+|----|---------------------------------------------------------------------------|------------|
+| 1  | Create a *single source of truth* for 24 years (2000–2023) of IPEDS data across all major survey families | Yes |
+| 2  | Eliminate manual data cleaning and reconciliation for analysts         | Yes |
+| 3  | Enable *equity & diversity reporting* (race/ethnicity gaps in enrollment, completion, graduation) | Yes |
+| 4  | Support *financial sustainability analysis* (tuition dependence, operating margin, revenue per student, endowment health) | Yes |
+| 5  | Deliver *CFO- and board-level KPIs* in drag-and-drop format           | Yes (marts + Power BI) |
+| 6  | Provide *cohort-based student success metrics* (retention, graduation rates, transfer-out) | Yes |
+| 7  | Build a *reusable, cloud-portable architecture* (PostgreSQL → Snowflake/BigQuery ready) | Yes |
+| 8  | Demonstrate *modern analytics engineering practices* (dbt, testing, documentation, versioning, public sharing) | Yes |
+
+## 3. Functional Requirements Delivered
+- Full medallion architecture (Bronze → Silver → Gold → Marts)
+- 471 raw files ingested and versioned
+- 320+ dbt models with 1200+ lines of tests and documentation
+- 18 analytical marts with 100+ pre-calculated business metrics
+- Public BigQuery dataset for instant analyst access
+- Power BI dashboards (in progress)
+
+## 4. Non-Functional Requirements Met
+| Requirement               | Status       | Implementation |
+|---------------------------|--------------|----------------|
+| Reproducibility           | 100 %        | dbt seed && dbt run |
+| Data quality & integrity  | 100 % tested | dbt tests + schema.yml |
+| Portability               | Ready        | Pure SQL + dbt (runs on Snowflake/BigQuery) |
+| Auditability              | Full lineage | Raw bronze preserved + dbt docs |
+| Collaboration             | Team-enabled | Public marts + BigQuery sharing |
+
+## 5. Success Criteria Achieved
+- Analysts can answer complex equity and financial questions in *minutes*, not weeks
+- No stakeholder ever touches a raw IPEDS CSV again
+- All metrics are *consistent, documented, and tested*
+- Architecture serves as a *reference implementation* for modern higher-education analytics
+
+*Project delivered: December 2025*  
+*Built solo by Muhammad (Delex) in under 5 weeks*
+
+---
+
 ## Dataset Selection and Initial Analysis
 The IPEDS dataset was chosen for its depth, real-world messiness, and high business relevance – covering 2.6 GB of raw Zip files from the U.S. Department of Education (NCES). It includes annual surveys on institutional characteristics, enrollment, completions, finance, and more, making it ideal for demonstrating regulated data handling at scale.
 
