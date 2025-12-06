@@ -12,213 +12,138 @@
 ----------
 ## Core Data Model (Star Schema)
 ```mermaid
-erDiagram
+flowchart TD
 
-    %% ===========================
-    %% Dimensions
-    %% ===========================
+%% ================================
+%% SOURCE LAYER
+%% ================================
+SRC_HD[HDYYYY Source Files]
+SRC_ADM[ADMYYYY Source Files]
+SRC_CYYYY[Completions CYYYY]
+SRC_EFYYYY[Enrollment EFYYYY]
+SRC_FFYYYY[Finance FFYYYY]
+SRC_GRYYYY[Graduation GRCYYYY]
 
-    DIM_ACADEMIC_YEAR {
-        int academic_year_id
-        date year_start_date
-        date year_end_date
-    }
+%% ================================
+%% BRONZE LAYER
+%% ================================
+BRZ_HD[bronze_hdyyyy]
+BRZ_ADM[bronze_admissions]
+BRZ_COMP[bronze_completions]
+BRZ_ENR[bronze_enrollment]
+BRZ_FIN[bronze_finance]
+BRZ_GRAD[bronze_graduates]
 
-    DIM_INSTITUTIONS {
-        int unit_id
-        string institution_name
-        string city
-        string state_abbreviation
-        int control_type
-        int sector
-        int institution_level
-    }
+SRC_HD --> BRZ_HD
+SRC_ADM --> BRZ_ADM
+SRC_CYYYY --> BRZ_COMP
+SRC_EFYYYY --> BRZ_ENR
+SRC_FFYYYY --> BRZ_FIN
+SRC_GRYYYY --> BRZ_GRAD
 
-    DIM_AWARD_LEVEL {
-        int award_level_code
-        string award_level_name
-    }
+%% ================================
+%% SILVER LAYER
+%% ================================
+SLV_HD[silver_hdyyyy_union]
+SLV_ADM[silver_admissions_clean]
+SLV_COMP[silver_completions_clean]
+SLV_ENR[silver_enrollment_clean]
+SLV_FIN[silver_finance_clean]
+SLV_GRAD[silver_graduates_clean]
 
-    DIM_RACE_ETHNICITY {
-        int race_code
-        string race_label
-    }
+BRZ_HD --> SLV_HD
+BRZ_ADM --> SLV_ADM
+BRZ_COMP --> SLV_COMP
+BRZ_ENR --> SLV_ENR
+BRZ_FIN --> SLV_FIN
+BRZ_GRAD --> SLV_GRAD
 
-    DIM_FINANCE_CATEGORY {
-        int finance_category_sk
-        string category_name
-    }
+%% ================================
+%% GOLD DIMENSIONS
+%% ================================
+DIM_YEAR[dim_academic_year]
+DIM_INST[dim_institutions]
+DIM_AWARD[dim_award_level]
+DIM_RACE[dim_race_ethnicity]
+DIM_FINCAT[dim_finance_category]
 
+SLV_HD --> DIM_INST
+SLV_COMP --> DIM_AWARD
+SLV_ENR --> DIM_RACE
+SLV_FIN --> DIM_FINCAT
 
-    %% ===========================
-    %% Facts
-    %% ===========================
+%% ================================
+%% GOLD FACTS
+%% ================================
+FACT_ADM[fact_admissions]
+FACT_ENROLL_TOTAL[fact_enrollment_fullyear_total]
+FACT_ENROLL_RACE[fact_enrollment_fullyear_race]
+FACT_COMP_TOTAL[fact_completion_total]
+FACT_COMP_RACE[fact_completion_by_race]
+FACT_COMP_AWARD[fact_completion_award_level]
+FACT_FIN[fact_finance]
+FACT_GRAD_TOTAL[fact_graduates_total]
+FACT_GRAD_RACE[fact_graduates_by_race]
+FACT_LEARN[fact_learning_mode]
+FACT_INSTYEAR[fact_institution_per_year]
 
-    FACT_ADMISSIONS {
-        int academic_year_id
-        int unit_id
-        int applicants_total
-        int admitted_total
-        int enrolled_total
-    }
+SLV_ADM --> FACT_ADM
+SLV_ENR --> FACT_ENROLL_TOTAL
+SLV_ENR --> FACT_ENROLL_RACE
+SLV_COMP --> FACT_COMP_TOTAL
+SLV_COMP --> FACT_COMP_RACE
+SLV_COMP --> FACT_COMP_AWARD
+SLV_FIN --> FACT_FIN
+SLV_GRAD --> FACT_GRAD_TOTAL
+SLV_GRAD --> FACT_GRAD_RACE
+SLV_HD --> FACT_INSTYEAR
 
-    FACT_COMPLETION_AWARD_LEVEL {
-        int academic_year_id
-        int unit_id
-        int award_level_code
-        int total_completions
-    }
+%% Link Facts to Dims
+DIM_YEAR --> FACT_ADM
+DIM_INST --> FACT_ADM
 
-    FACT_COMPLETION_BY_RACE {
-        int academic_year_id
-        int unit_id
-        int race_code
-        int completions_total
-    }
+DIM_YEAR --> FACT_ENROLL_TOTAL
+DIM_INST --> FACT_ENROLL_TOTAL
+DIM_RACE --> FACT_ENROLL_RACE
 
-    FACT_COMPLETION_TOTAL {
-        int academic_year_id
-        int unit_id
-        int completions_total
-    }
+DIM_INST --> FACT_FIN
+DIM_YEAR --> FACT_FIN
+DIM_FINCAT --> FACT_FIN
 
-    FACT_ENROLLMENT_FULLYEAR_TOTAL {
-        int academic_year_id
-        int unit_id
-        int total_enrollment
-    }
+DIM_INST --> FACT_COMP_AWARD
+DIM_AWARD --> FACT_COMP_AWARD
 
-    FACT_ENROLLMENT_FULLYEAR_RACE {
-        int academic_year_id
-        int unit_id
-        int race_code
-        int enrollment_total
-    }
+%% ================================
+%% MARTS LAYER
+%% ================================
+MART_FIN[mart_finance]
+MART_RACE[mart_race]
+MART_ENROLL[mart_enrollment]
+MART_OUTCOME[mart_outcomes]
+MART_INSTYEAR[mart_institution_per_year]
 
-    FACT_GRADUATES_BY_RACE {
-        int academic_year_id
-        int unit_id
-        int race_code
-        int graduates_total
-    }
+FACT_FIN --> MART_FIN
+FACT_ENROLL_RACE --> MART_RACE
+FACT_COMP_RACE --> MART_RACE
+FACT_GRAD_RACE --> MART_RACE
+FACT_COMP_TOTAL --> MART_OUTCOME
+FACT_GRAD_TOTAL --> MART_OUTCOME
+FACT_INSTYEAR --> MART_INSTYEAR
 
-    FACT_GRADUATES_TOTAL {
-        int academic_year_id
-        int unit_id
-        int graduates_total
-    }
+%% ================================
+%% METRICS LAYER
+%% ================================
+METR_FIN[mart_finance_metrics]
+METR_RACE[mart_race_metrics]
+METR_ENR[mart_enrollment_metrics]
+METR_OUTCOME[mart_outcomes_metrics]
+METR_ADM[admissions_metrics]
 
-    FACT_FINANCE {
-        int academic_year_id
-        int unit_id
-        int finance_category_sk
-        numeric amount
-    }
-
-    FACT_LEARNING_MODE {
-        int academic_year_id
-        int unit_id
-        int fully_online
-        int hybrid
-        int in_person
-    }
-
-    MART_FINANCE {
-        int academic_year_id
-        int unit_id
-        numeric total_revenue
-        numeric total_expenses
-        numeric tuition_revenue
-    }
-
-    MART_FINANCE_METRICS {
-        int academic_year_id
-        int unit_id
-        numeric revenue_per_student
-        numeric expenses_per_student
-        numeric net_position
-    }
-
-    MART_RACE {
-        int academic_year_id
-        int unit_id
-        int race_code
-        int enrollment_total
-        int completions_total
-        int graduates_total
-    }
-
-    MART_ENROLLMENT_METRICS {
-        int academic_year_id
-        int unit_id
-        numeric yr_over_yr_growth
-        numeric retention_rate
-    }
-
-    MART_COMPLETION_METRICS {
-        int academic_year_id
-        int unit_id
-        numeric completion_rate
-        numeric completion_gap_urm
-        numeric equity_index
-    }
-
-    MART_INSTITUTION_PER_YEAR {
-        int academic_year_id
-        int unit_id
-        string institution_name
-        string city
-        string state_abbreviation
-        int control_type
-        int sector
-    }
-
-    %% ===========================
-    %% Relationships
-    %% ===========================
-
-    DIM_ACADEMIC_YEAR ||--o{ FACT_ADMISSIONS : academic_year_id
-    DIM_ACADEMIC_YEAR ||--o{ FACT_COMPLETION_AWARD_LEVEL : academic_year_id
-    DIM_ACADEMIC_YEAR ||--o{ FACT_COMPLETION_BY_RACE : academic_year_id
-    DIM_ACADEMIC_YEAR ||--o{ FACT_COMPLETION_TOTAL : academic_year_id
-    DIM_ACADEMIC_YEAR ||--o{ FACT_ENROLLMENT_FULLYEAR_TOTAL : academic_year_id
-    DIM_ACADEMIC_YEAR ||--o{ FACT_ENROLLMENT_FULLYEAR_RACE : academic_year_id
-    DIM_ACADEMIC_YEAR ||--o{ FACT_FINANCE : academic_year_id
-    DIM_ACADEMIC_YEAR ||--o{ FACT_GRADUATES_BY_RACE : academic_year_id
-    DIM_ACADEMIC_YEAR ||--o{ FACT_GRADUATES_TOTAL : academic_year_id
-    DIM_ACADEMIC_YEAR ||--o{ FACT_LEARNING_MODE : academic_year_id
-    DIM_ACADEMIC_YEAR ||--o{ MART_FINANCE : academic_year_id
-    DIM_ACADEMIC_YEAR ||--o{ MART_FINANCE_METRICS : academic_year_id
-    DIM_ACADEMIC_YEAR ||--o{ MART_RACE : academic_year_id
-    DIM_ACADEMIC_YEAR ||--o{ MART_ENROLLMENT_METRICS : academic_year_id
-    DIM_ACADEMIC_YEAR ||--o{ MART_COMPLETION_METRICS : academic_year_id
-    DIM_ACADEMIC_YEAR ||--o{ MART_INSTITUTION_PER_YEAR : academic_year_id
-
-    DIM_INSTITUTIONS ||--o{ FACT_ADMISSIONS : unit_id
-    DIM_INSTITUTIONS ||--o{ FACT_COMPLETION_AWARD_LEVEL : unit_id
-    DIM_INSTITUTIONS ||--o{ FACT_COMPLETION_BY_RACE : unit_id
-    DIM_INSTITUTIONS ||--o{ FACT_COMPLETION_TOTAL : unit_id
-    DIM_INSTITUTIONS ||--o{ FACT_ENROLLMENT_FULLYEAR_TOTAL : unit_id
-    DIM_INSTITUTIONS ||--o{ FACT_ENROLLMENT_FULLYEAR_RACE : unit_id
-    DIM_INSTITUTIONS ||--o{ FACT_FINANCE : unit_id
-    DIM_INSTITUTIONS ||--o{ FACT_GRADUATES_BY_RACE : unit_id
-    DIM_INSTITUTIONS ||--o{ FACT_GRADUATES_TOTAL : unit_id
-    DIM_INSTITUTIONS ||--o{ FACT_LEARNING_MODE : unit_id
-    DIM_INSTITUTIONS ||--o{ MART_FINANCE : unit_id
-    DIM_INSTITUTIONS ||--o{ MART_FINANCE_METRICS : unit_id
-    DIM_INSTITUTIONS ||--o{ MART_RACE : unit_id
-    DIM_INSTITUTIONS ||--o{ MART_ENROLLMENT_METRICS : unit_id
-    DIM_INSTITUTIONS ||--o{ MART_COMPLETION_METRICS : unit_id
-    DIM_INSTITUTIONS ||--o{ MART_INSTITUTION_PER_YEAR : unit_id
-
-    DIM_AWARD_LEVEL ||--o{ FACT_COMPLETION_AWARD_LEVEL : award_level_code
-
-    DIM_RACE_ETHNICITY ||--o{ FACT_COMPLETION_BY_RACE : race_code
-    DIM_RACE_ETHNICITY ||--o{ FACT_ENROLLMENT_FULLYEAR_RACE : race_code
-    DIM_RACE_ETHNICITY ||--o{ FACT_GRADUATES_BY_RACE : race_code
-    DIM_RACE_ETHNICITY ||--o{ MART_RACE : race_code
-
-    DIM_FINANCE_CATEGORY ||--o{ FACT_FINANCE : finance_category_sk
+MART_FIN --> METR_FIN
+MART_RACE --> METR_RACE
+MART_ENROLL --> METR_ENR
+MART_OUTCOME --> METR_OUTCOME
+FACT_ADM --> METR_ADM
 
 
 ```
