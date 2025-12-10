@@ -148,6 +148,18 @@ FACT_ADM --> METR_ADM
 
 ```
 
+## Live Dashboards (Power BI) Previews
+
+![Model View] (https://github.com/Greatdev666/IPEDS-Data-Warehouse/blob/master/Dashboards/IPEDS%20Dashboard%20Screenshots/04_model%20view.png
+)
+
+![Executive Overview](https://github.com/Greatdev666/IPEDS-Data-Warehouse/blob/master/Dashboards/IPEDS%20Dashboard%20Screenshots/01_executive_overview.png
+)
+![Yearly Overview](https://github.com/Greatdev666/IPEDS-Data-Warehouse/blob/master/Dashboards/IPEDS%20Dashboard%20Screenshots/02_yearly_deep_dive.png
+)
+![Financial Breakdown](https://github.com/Greatdev666/IPEDS-Data-Warehouse/blob/master/Dashboards/IPEDS%20Dashboard%20Screenshots/03_annual_financial_breakdown.png
+)
+
 
 ## Project Overview
 This repository hosts a fully modern, production-grade data warehouse built on the Integrated Postsecondary Education Data System (IPEDS) dataset – one of the largest and most complex public education datasets in the U.S. Spanning 2000–2023, it covers institutional performance, enrollment, completions, finance, and equity metrics for thousands of U.S. higher-education institutions.
@@ -161,7 +173,7 @@ Key outcomes:
 This project demonstrates real-world analytics engineering: handling messy legacy data, mid-project migration, and delivering analyst-ready outputs without cutting corners.
 
 - Lineage (Kimball-style Star Schema): [Diagram](https://mermaid.sametcc.me/iframe?diagram=eJzNWMtunDAU3UfKP8wmy_xApS4oMFMkYCKGtJqV5QF3YhUMNSYJSvLvNRCGl014RS2bKFzfcx8-9zEgqmF4pjC8vrq-2vDn5mbzVf5czmg4RCTBEUnGqZWnNMMCiqpoumWo4KgrzualFOQPJmwDPeijEHsgQ5AC7NdSHzK0Kd4mDFIG8v9FUkT8huytadmwD67h3rvG3j50DacEs5a9hFFMzlyWMMxSxiMFBIaod8DDLOu95C4yBODpRNEjhrly25oXEUajALAsRm1JgjwW0fa7pg8BekSBIDblp-JowNR_6GYvp0-Q-qUi8CK_H0LzQB1jC95RVB3o7nfbUA332LVAoYfE0IUkgCehz1vDVmyOqyquvts7PdhfmECSI_NkniOageR3P_2VrOP4JDJvoccm8XirqC5QNMs4HERkkrNYSLVCJY4D7EHCEsAiBoOO1A8xY8gXyRDhTArasreWo-reujP1nPaDNJnhtJRZubTwh78P4wCxulNIfft2LGi2gl8CPpZVd3FlVLLcvauskaZRdnXb2Zumpdsu2N6bZt4cV3OgvImSKLxts7H2P_c6an_kWdk5inbP28Ph89nBh6Cf8m4ycEe1N2vdzAij711yBWOD_ZSkIaLY28AwSsUMMTklbMPeAWuvreJOGgQZiEiASecqHrIT7Z7GBMSIJtUkvbhmKc5aOapSUJYLH92IpEgmRs8xX4BQIpCnuBjVLQChv8DSXcdQl86PyvC7wTxPfElK_UulNw9Vfg-fIoiBOEpwvbq0A_gXnaGSStppJR4uqcL7Rq9b9wYyCqJHnlf-90yjJ_YguiTG4yr40d9SC-8aE2hd7-rENWxLDpxhDFIaCvjzh9M7A5j46FnkfWPJBne6M3HL_19X8beJG6WDgsJW8oDjhb-QXl9vb6OX3sr5RZLFYQDJKrgYrJrOi4HKwToPRr5CrYe3IMpqSM3T7m9CS3GWpKa9C0zGaA3tRdqXFjkPZV4iZUNkHpCg388DErZeEVQN1vokIu00rY48qCbtL7MgaqbPUq8IPl55qIMsQ5kcR10d43VEPWKO9vSQu_1glGanC0zWaZTLeN0paZHX-Xh1YXWPV5fU9AWg0Rca9TZu5Pe-3tRgne99H9ZnZ5H_AGKgQKYBiQg_GqFJh4ZSrdb7PimuT-HP6r_RcJR0) 
-- Power BI dashboard previews: coming soon
+- Power BI live dashboards: [Dashboards](https://github.com/Greatdev666/IPEDS-Data-Warehouse/releases/download/v1.0-dashboards/IPEDS_Executive_Dashboard.pbix)
 - Live marts(public on BigQuery): [/ipeds_public_datasets](https://console.cloud.google.com/bigquery?ws=!1m4!1m3!3m2!1sipeds-public!2sipeds_public) (exported CSVs for marts/dims and few facts. Only datasets that are below 100mb are made public)
 
   ---
@@ -180,7 +192,7 @@ This project demonstrates real-world analytics engineering: handling messy legac
 | Testing & Docs      | dbt tests (1200+ lines), schema.yml, dbt docs     | Data quality & lineage |
 | Version Control     | Git + GitHub                                      | Full history & collaboration |
 | Public Sharing      | Google BigQuery (public dataset)                  | Analyst & recruiter access |
-| Visualization       | Power BI (in progress)                            | Drag-and-drop dashboards |
+| Visualization       | Power BI                             | Drag-and-drop dashboards |
 
 ---
 
