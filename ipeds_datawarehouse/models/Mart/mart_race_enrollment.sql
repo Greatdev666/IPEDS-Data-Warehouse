@@ -24,6 +24,7 @@ SELECT
     i.control_type,
     i.sector,
     i.institution_level,
+    r.race_ethnicity_sk,
 
     SUM(e.total) AS total_enrollment,
     -- Pivot the 9 race categories
@@ -42,4 +43,4 @@ FROM e
 LEFT JOIN r ON e.race_ethnicity_sk = r.race_ethnicity_sk
 LEFT JOIN y ON e.year = y.academic_year_id
 LEFT JOIN i ON e.unit_id = i.unit_id
-GROUP BY 1,2,3,4,5,6,7,8,9,10
+GROUP BY 1,2,3,4,5,6,7,8,9,10,11

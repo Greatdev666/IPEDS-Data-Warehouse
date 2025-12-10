@@ -368,9 +368,3 @@ This system is built with:
 * Clean dimensional modeling  
 
 **🚀 Ready to transform raw IPEDS data into actionable insights — empowering data analysts to uncover trends, drive decisions, and deliver impact like never before!**
-
-
-
-
-
-
