@@ -174,7 +174,7 @@ This project demonstrates real-world analytics engineering: handling messy legac
 
 - Lineage (Kimball-style Star Schema): [Diagram](https://mermaid.sametcc.me/iframe?diagram=eJzNWMtunDAU3UfKP8wmy_xApS4oMFMkYCKGtJqV5QF3YhUMNSYJSvLvNRCGl014RS2bKFzfcx8-9zEgqmF4pjC8vrq-2vDn5mbzVf5czmg4RCTBEUnGqZWnNMMCiqpoumWo4KgrzualFOQPJmwDPeijEHsgQ5AC7NdSHzK0Kd4mDFIG8v9FUkT8huytadmwD67h3rvG3j50DacEs5a9hFFMzlyWMMxSxiMFBIaod8DDLOu95C4yBODpRNEjhrly25oXEUajALAsRm1JgjwW0fa7pg8BekSBIDblp-JowNR_6GYvp0-Q-qUi8CK_H0LzQB1jC95RVB3o7nfbUA332LVAoYfE0IUkgCehz1vDVmyOqyquvts7PdhfmECSI_NkniOageR3P_2VrOP4JDJvoccm8XirqC5QNMs4HERkkrNYSLVCJY4D7EHCEsAiBoOO1A8xY8gXyRDhTArasreWo-reujP1nPaDNJnhtJRZubTwh78P4wCxulNIfft2LGi2gl8CPpZVd3FlVLLcvauskaZRdnXb2Zumpdsu2N6bZt4cV3OgvImSKLxts7H2P_c6an_kWdk5inbP28Ph89nBh6Cf8m4ycEe1N2vdzAij711yBWOD_ZSkIaLY28AwSsUMMTklbMPeAWuvreJOGgQZiEiASecqHrIT7Z7GBMSIJtUkvbhmKc5aOapSUJYLH92IpEgmRs8xX4BQIpCnuBjVLQChv8DSXcdQl86PyvC7wTxPfElK_UulNw9Vfg-fIoiBOEpwvbq0A_gXnaGSStppJR4uqcL7Rq9b9wYyCqJHnlf-90yjJ_YguiTG4yr40d9SC-8aE2hd7-rENWxLDpxhDFIaCvjzh9M7A5j46FnkfWPJBne6M3HL_19X8beJG6WDgsJW8oDjhb-QXl9vb6OX3sr5RZLFYQDJKrgYrJrOi4HKwToPRr5CrYe3IMpqSM3T7m9CS3GWpKa9C0zGaA3tRdqXFjkPZV4iZUNkHpCg388DErZeEVQN1vokIu00rY48qCbtL7MgaqbPUq8IPl55qIMsQ5kcR10d43VEPWKO9vSQu_1glGanC0zWaZTLeN0paZHX-Xh1YXWPV5fU9AWg0Rca9TZu5Pe-3tRgne99H9ZnZ5H_AGKgQKYBiQg_GqFJh4ZSrdb7PimuT-HP6r_RcJR0) 
 - Power BI live dashboards: [Dashboards](https://github.com/Greatdev666/IPEDS-Data-Warehouse/releases/download/v1.0-dashboards/IPEDS_Executive_Dashboard.pbix)
-- Live marts(public on BigQuery): [/ipeds_public_datasets](https://console.cloud.google.com/bigquery?ws=!1m4!1m3!3m2!1sipeds-public!2sipeds_public) (exported CSVs for marts/dims and few facts. Only datasets that are below 100mb are made public)
+- Live marts Datasets(public on BigQuery): [ipeds-public](https://console.cloud.google.com/bigquery?ws=!1m4!1m3!3m2!1sipeds-public!2sipeds_public) (exported CSVs for marts/dims and few facts. Only datasets that are below 100mb are made public)
 
   ---
 
@@ -202,17 +202,21 @@ This project demonstrates real-world analytics engineering: handling messy legac
 ## 1. Project Aim
 To transform the raw, fragmented, and historically inconsistent U.S. IPEDS higher-education dataset into a *single, trusted, analytics-ready platform* that enables institutional leaders, researchers, and policymakers to answer high-impact questions with confidence and speed.
 
-## 2. Core Business Objectives
-| # | Objective                                                                 | Delivered? |
-|----|---------------------------------------------------------------------------|------------|
-| 1  | Create a *single source of truth* for 24 years (2000–2023) of IPEDS data across all major survey families | Yes |
-| 2  | Eliminate manual data cleaning and reconciliation for analysts         | Yes |
-| 3  | Enable *equity & diversity reporting* (race/ethnicity gaps in enrollment, completion, graduation) | Yes |
-| 4  | Support *financial sustainability analysis* (tuition dependence, operating margin, revenue per student, endowment health) | Yes |
-| 5  | Deliver *CFO- and board-level KPIs* in drag-and-drop format           | Yes (marts + Power BI) |
-| 6  | Provide *cohort-based student success metrics* (retention, graduation rates, transfer-out) | Yes |
-| 7  | Build a *reusable, cloud-portable architecture* (PostgreSQL → Snowflake/BigQuery ready) | Yes |
-| 8  | Demonstrate *modern analytics engineering practices* (dbt, testing, documentation, versioning, public sharing) | Yes |
+## 2. Core Business Objectives – ALL DELIVERED ✓
+
+| # | Objective                                                                      | Delivered? | How |
+|---|--------------------------------------------------------------------------------|------------|-----|
+| 1 | Create a *single source of truth* for 24 years (2000–2023) of IPEDS data across all major survey families | Yes | 471 raw files → 12.5M+ rows → unified warehouse |
+| 2 | Eliminate manual data cleaning and reconciliation for analysts                | Yes | Analyst-ready marts + public on BigQuery |
+| 3 | Enable *equity & diversity reporting* (race/ethnicity gaps in enrollment, completion, graduation) | Yes | URM gaps, Diversity Index, pipeline efficiency KPIs |
+| 4 | Support *financial sustainability analysis* (tuition dependence, operating margin, revenue/expense per student, endowment health) | Yes | Dedicated finance marts + CFO KPIs |
+| 5 | Deliver *CFO- and board-level KPIs* in drag-and-drop format                  | Yes | 3-page Power BI executive dashboard (live .pbix + PDF) |
+| 6 | Provide *cohort-based student success metrics* (retention, graduation rates, transfer-out) | Yes | 4-yr / 6-yr / 8-yr rates + retention funnels |
+| 7 | Build a *reusable, cloud-portable architecture* (PostgreSQL → Snowflake/BigQuery ready) | Yes | Pure dbt + SQL → runs anywhere |
+| 8 | Demonstrate *modern analytics engineering practices* (dbt, testing, docs, versioning, public sharing) | Yes | 1200+ test lines, dbt docs, GitHub, public BigQuery |
+
+*Status: 8 out of 8 objectives delivered*  
+*Built solo in under 5 weeks* — November - December 2025
 
 ## 3. Functional Requirements Delivered
 - Full medallion architecture (Bronze → Silver → Gold → Marts)
@@ -220,7 +224,7 @@ To transform the raw, fragmented, and historically inconsistent U.S. IPEDS highe
 - 320+ dbt models with 1200+ lines of tests and documentation
 - 18 analytical marts with 100+ pre-calculated business metrics
 - Public BigQuery dataset for instant analyst access
-- Power BI dashboards (in progress)
+- Power BI dashboards (Executive overview + Yearly Deep Dive + Annual Financial Breakdown)
 
 ## 4. Non-Functional Requirements Met
 | Requirement               | Status       | Implementation |
@@ -305,14 +309,18 @@ Created analyst-facing marts with pre-calculated business metrics for drag-and-d
 
 See [Marts & Metrics README](https://github.com/Greatdev666/IPEDS-Data-Warehouse/blob/master/ipeds_datawarehouse/models/Mart/Mart_Readme.md) for full metric definitions and quality rules.
 
-## Tech Stack
-- *Ingestion*: Python (automated CSV/Zip processing, pandas for schema handling).
-- *Warehouse*: SQL Server (initial), PostgreSQL (final/production).
-- *Transformation*: dbt Core (320+ models, 451 macros, Jinja SQL/YAML for templating).
-- *Testing/Docs*: dbt tests (uniqueness, not_null, relationships, custom expressions), schema.yml, dbt docs site.
-- *Snapshots*: SCD2 for slowly changing dimensions (e.g., institutions).
-- *Version Control*: Git/GitHub with branching and commit history.
-- *Future-Proof*: ELT pattern; portable to Snowflake/BigQuery.
+## Power BI Executive Dashboards
+Three production-grade, boardroom-ready reports built directly on the warehouse marts.
+
+- *Output*: 3 interactive pages (Executive Overview, Yearly Deep Dive, Annual Financial Breakdown)
+- *Key views*: Revenue vs Expense trends, YoY KPIs with conditional arrows, Top 10 by Revenue / Operating Margin / Growth, Funding Source Heatmap, Richest Institutions table, Control Type & State breakdowns
+- *DAX power*: Custom measures for safe YoY %, operating margin, tuition dependence %, and conditional formatting — no reliance on messy calculated columns
+- *Design*: Clean, modern, fully slicable (Year, State, Sector, Control Type)
+
+Live .pbix + PDF available in [Dashboards](/dashboards) and [Releases v1.0-dashboards](https://github.com/Greatdev666/IPEDS-Data-Warehouse/releases/download/v1.0-dashboards/IPEDS_Executive_Dashboard.pbix)
+
+Delivers instant insights for Presidents, CFOs, and equity officers — zero data prep required.
+
 
 ## Documentation and Artifacts
 Detailed layer-specific docs are linked below – no repetition here for brevity.
@@ -340,7 +348,7 @@ Detailed layer-specific docs are linked below – no repetition here for brevity
 - Cloud migration demo (already tested on Snowflake).
 
 ## About Me
-Self-taught analytics engineer with a passion for turning messy data into business impact. This project replaced traditional internships by demonstrating full-stack delivery and team enablement. Open to Analytics Engineer/Data Engineer roles (remote preferred).
+Self-taught analytics engineer with a passion for turning messy data into business impact. This project replaced traditional internships by demonstrating full-stack delivery and team enablement. Open to Analytics Engineer/Data Engineer roles.
 
 LinkedIn: [Muhammad Bashir](#)  
 
