@@ -150,7 +150,7 @@ FACT_ADM --> METR_ADM
 
 ## Live Dashboards (Power BI) Previews
 
-![Model View] (https://github.com/Greatdev666/IPEDS-Data-Warehouse/blob/master/Dashboards/IPEDS%20Dashboard%20Screenshots/04_model%20view.png
+![Executive Overview](https://github.com/Greatdev666/IPEDS-Data-Warehouse/blob/master/Dashboards/IPEDS%20Dashboard%20Screenshots/04_model%20view.png
 )
 
 ![Executive Overview](https://github.com/Greatdev666/IPEDS-Data-Warehouse/blob/master/Dashboards/IPEDS%20Dashboard%20Screenshots/01_executive_overview.png
